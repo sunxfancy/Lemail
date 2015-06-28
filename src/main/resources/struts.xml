@@ -6,6 +6,9 @@
 
 <struts>
         <package name="api" extends="struts-default">
+
+        </package>
+        <package name="test" extends="struts-default">
                 <action name="test" class="lemail.api.Test" method="test"/>
         </package>
         <package name="pages" extends="struts-default">

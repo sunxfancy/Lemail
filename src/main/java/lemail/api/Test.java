@@ -1,9 +1,6 @@
 package lemail.api;
 
-import org.apache.struts2.ServletActionContext;
-
-import java.io.IOException;
-import java.io.PrintWriter;
+import lemail.utils.Action;
 
 /**
  * 只为测试
@@ -11,19 +8,7 @@ import java.io.PrintWriter;
  */
 public class Test {
     public String test() {
-        println("Hello");
+        Action.println("Hello");
         return null;
     }
-
-    private void println(String str) {
-        ServletActionContext.getResponse().setContentType("application/json;charset=UTF-8");
-        try {
-            PrintWriter pw = ServletActionContext.getResponse().getWriter();
-            pw.println(str);
-            pw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
