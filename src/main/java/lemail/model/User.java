@@ -11,11 +11,11 @@ import java.security.NoSuchAlgorithmException;
  */
 @Entity
 @Table(name = "`user`")
-public class User implements Serializable{
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
-    private int id;
+    private Integer id;
     @Column(name = "`name`")
     private String name;
     @Column(name = "`role`")
@@ -25,14 +25,15 @@ public class User implements Serializable{
     @Column(name = "`password`")
     private String password;
     @Column(name = "`department_id`")
-    private int department_id;
+    private Integer department_id;
 
     /**
      * 创建一个新用户，必须有这些信息
-     * @param username 用户名
-     * @param password 密码
-     * @param name 显示用姓名
-     * @param role 角色信息，存入几个字符，M-manager管理员，D-dispatcher分发者，H-handler处理者，R-reviewer审阅者
+     *
+     * @param username     用户名
+     * @param password     密码
+     * @param name         显示用姓名
+     * @param role         角色信息，存入几个字符，M-manager管理员，D-dispatcher分发者，H-handler处理者，R-reviewer审阅者
      * @param departmentId 部门所属id，数据库中存放的是外键id，这里映射成了对象
      */
 
@@ -51,8 +52,7 @@ public class User implements Serializable{
         return this.password.equals(encode(passwd));
     }
 
-    private static String encode(String passwordToHash)
-    {
+    private static String encode(String passwordToHash) {
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -62,19 +62,17 @@ public class User implements Serializable{
                 sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
             }
             generatedPassword = sb.toString();
-        }
-        catch (NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return generatedPassword;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -110,11 +108,11 @@ public class User implements Serializable{
         this.password = encode(password);
     }
 
-    public int getDepartmentId() {
+    public Integer getDepartmentId() {
         return department_id;
     }
 
-    public void setDepartmentId(int departmentId) {
+    public void setDepartmentId(Integer departmentId) {
         this.department_id = departmentId;
     }
 }

@@ -14,25 +14,25 @@ public class Inbox implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
-    private int id;
+    private Integer id;
     @Column(name = "`subject`")
     private String subject;
     @Column(name = "`content`", columnDefinition = "LONGTEXT")
     private String content;
     @Column(name = "`date`")
     private Date date;
-    @Column(name = "`attachment`",columnDefinition = "LONGTEXT")
+    @Column(name = "`attachment`", columnDefinition = "LONGTEXT")
     private String attachment;
     @Column(name = "`state`")
-    private int state;
+    private Integer state;
     @Column(name = "`from`")
     private String from;
-    @Column(name = "`review`" ,columnDefinition = "TINYINT(1)")
-    private boolean review;
+    @Column(name = "`review`", columnDefinition = "TINYINT(1)")
+    private Boolean review;
     @Column(name = "`tag`")
     private String tag;
     @Column(name = "`belong_user_id`")
-    private int belong_user_id;
+    private Integer belong_user_id;
 
     public Inbox(String subject, String content, Date date, String from) {
         this.subject = subject;
@@ -46,11 +46,11 @@ public class Inbox implements Serializable {
 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -86,11 +86,11 @@ public class Inbox implements Serializable {
         this.attachment = attachment;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 
@@ -102,11 +102,11 @@ public class Inbox implements Serializable {
         this.from = from;
     }
 
-    public boolean isReview() {
+    public Boolean isReview() {
         return review;
     }
 
-    public void setReview(boolean review) {
+    public void setReview(Boolean review) {
         this.review = review;
     }
 
@@ -118,11 +118,11 @@ public class Inbox implements Serializable {
         this.tag = tag;
     }
 
-    public int getBelongUserId() {
+    public Integer getBelongUserId() {
         return belong_user_id;
     }
 
-    public void setBelongUserId(int belongUserId) {
+    public void setBelongUserId(Integer belongUserId) {
         this.belong_user_id = belongUserId;
     }
 }
