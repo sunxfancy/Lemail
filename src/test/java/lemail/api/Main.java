@@ -38,10 +38,9 @@ public class Main {
         final Session session = getSession();
         try {
             Department d = new Department("教务处");
-
-            User s = new User("sxf", "fajoewijfaoiwe", "孙笑凡", "hello", d);
-            session.beginTransaction();
             session.save(d);
+            User s = new User("sxf", "fajoewijfaoiwe", "孙笑凡", "hello", d.getId());
+            session.beginTransaction();
             session.save(s);
             session.getTransaction().commit();
         } finally {

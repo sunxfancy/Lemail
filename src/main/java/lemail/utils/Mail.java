@@ -52,15 +52,16 @@ public class Mail {
      * 发送一封邮件
      * @param subject 主题
      * @param content 内容
-     * @param from    发件人
      * @param to      收件人列表
      * @throws MessagingException 异常情况
      */
-    public void PostMail(String subject, String content, String from, String... to)
+    public void PostMail(String subject, String content, String... to)
             throws MessagingException {
         Properties props = new Properties();
         props.put("mail.smtp.host", hostname);
         props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.user", username);
+        props.put("mail.smtp.password", password);
 
         Session session = Session.getDefaultInstance(props, auth);
         session.setDebug(true);
@@ -68,7 +69,7 @@ public class Mail {
         Message msg = new MimeMessage(session);
 
         // set the from and to address
-        InternetAddress addressFrom = new InternetAddress(from);
+        InternetAddress addressFrom = new InternetAddress(username);
         msg.setFrom(addressFrom);
 
         InternetAddress[] addressTo = new InternetAddress[to.length];
@@ -79,12 +80,8 @@ public class Mail {
 
         // Setting the Subject and Content Type
         msg.setSubject(subject);
-        msg.setContent(content, "text/plain");
-        msg.saveChanges();
-        Transport transport = session.getTransport("smtp");
-        transport.connect(hostname, username, password);
-        transport.sendMessage(msg, msg.getAllRecipients());
-        transport.close();
+        msg.setContent(content, "text/plain;charset=UTF-8");
+        Transport.send(msg);
     }
 
 
