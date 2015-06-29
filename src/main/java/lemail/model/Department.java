@@ -10,11 +10,13 @@ import java.io.Serializable;
  */
 
 @Entity
-@Table(name = "department")
+@Table(name = "`department`")
 public class Department implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "`id`")
     private int id;
+    @Column(name = "`name`")
     private String name;
 
     public Department(String name) {
