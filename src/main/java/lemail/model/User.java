@@ -10,15 +10,21 @@ import java.security.NoSuchAlgorithmException;
  * Created by sxf on 15-6-28.
  */
 @Entity
-@Table(name = "user")
+@Table(name = "`user`")
 public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "`id`")
     private int id;
+    @Column(name = "`name`")
     private String name;
+    @Column(name = "`role`")
     private String role;
+    @Column(name = "`username`")
     private String username;
+    @Column(name = "`password`")
     private String password;
+    @Column(name = "`department_id`")
     private int department_id;
 
     /**

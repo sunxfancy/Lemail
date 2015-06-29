@@ -9,22 +9,29 @@ import java.util.Date;
  * Created by sxf on 15-6-28.
  */
 @Entity
-@Table(name = "inbox")
+@Table(name = "`inbox`")
 public class Inbox implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "`id`")
     private int id;
+    @Column(name = "`subject`")
     private String subject;
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(name = "`content`", columnDefinition = "LONGTEXT")
     private String content;
+    @Column(name = "`date`")
     private Date date;
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(name = "`attachment`",columnDefinition = "LONGTEXT")
     private String attachment;
+    @Column(name = "`state`")
     private int state;
+    @Column(name = "`from`")
     private String from;
-    @Column(columnDefinition = "TINYINT(1)")
+    @Column(name = "`review`" ,columnDefinition = "TINYINT(1)")
     private boolean review;
+    @Column(name = "`tag`")
     private String tag;
+    @Column(name = "`belong_user_id`")
     private int belong_user_id;
 
     public Inbox(String subject, String content, Date date, String from) {
