@@ -13,13 +13,30 @@ import java.io.Serializable;
 @Table(name = "department")
 public class Department implements Serializable {
     @Id
-    public int id;
-    public String name;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String name;
 
     public Department(String name) {
         this.name = name;
     }
 
     public Department() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
