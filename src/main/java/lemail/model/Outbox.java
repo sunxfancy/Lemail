@@ -36,15 +36,12 @@ public class Outbox implements Serializable{
     @Column(name = "`checker`")
     private Integer checker;
 
-    public Outbox(String subject, String content, String attachment, Date date, int state, String to, String tag, int checker) {
+    public Outbox(String subject, String content, Date date, String to) {
         this.subject = subject;
         this.content = content;
-        this.attachment = attachment;
         this.date = date;
-        this.state = state;
+        this.state = 0;
         this.to = to;
-        this.tag = tag;
-        this.checker = checker;
     }
 
     public Outbox(){
@@ -52,11 +49,11 @@ public class Outbox implements Serializable{
     }
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -92,11 +89,11 @@ public class Outbox implements Serializable{
         this.date = date;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 
@@ -116,11 +113,11 @@ public class Outbox implements Serializable{
         this.tag = tag;
     }
 
-    public int getChecker() {
+    public Integer getChecker() {
         return checker;
     }
 
-    public void setChecker(int checker) {
+    public void setChecker(Integer checker) {
         this.checker = checker;
     }
 }
