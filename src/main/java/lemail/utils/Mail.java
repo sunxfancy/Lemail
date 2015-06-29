@@ -2,7 +2,6 @@ package lemail.utils;
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -87,42 +86,22 @@ public class Mail {
 
 
     // 得到所有的邮件
-    public Message[] retrieveAllMailMessage() throws Exception {
-        Session session;
-        Store store;
-        Folder folder;
-        Folder inbox_folder;
-
+    public Message[] getBox(String boxname) throws Exception {
         Properties props=System.getProperties();
         props.setProperty("mail.pop3s.rsetbeforequit","true");
         props.setProperty("mail.pop3.rsetbeforequit","true");
-        session=Session.getInstance(props,null);
+        Session session=Session.getInstance(props,null);
         // 打印出错误信息
         session.setDebug(true);
 
-        store=session.getStore(emailprovider);
+        Store store = session.getStore(emailprovider);
         store.connect(hostname, username, password);
-        folder=store.getFolder("INBOX");
+        Folder folder = store.getFolder(boxname);
         if( folder==null )
             throw new Exception("No default folder");
-        inbox_folder = folder;
-        inbox_folder.open(Folder.READ_WRITE);
+        folder.open(Folder.READ_WRITE);
 
-        Message[] msgs = inbox_folder.getMessages();
-
-        for (Message msg : msgs) {
-            System.out.println("################################");
-            if (msg != null) {
-                System.out.println("邮件标题:" + msg.getSubject());
-                System.out.println("邮件发送者：" + Arrays.toString(msg.getFrom()));
-                System.out.println("邮件发送时间：" + msg.getSentDate());
-                System.out.println("邮件正文:"
-                        + ((msg.getContent() == null) ? "没有正文"
-                        : msg.getContent()));
-            }
-        }
-
-        return msgs;
+        return folder.getMessages();
     }
 
 
