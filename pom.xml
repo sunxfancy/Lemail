@@ -54,6 +54,11 @@
             <version>2.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>Lemail</finalName>

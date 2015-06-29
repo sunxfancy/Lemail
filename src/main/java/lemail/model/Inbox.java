@@ -5,4 +5,5 @@ package lemail.model;
  * Created by sxf on 15-6-28.
  */
 public class Inbox {
+
 }
