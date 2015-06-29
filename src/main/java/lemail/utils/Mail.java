@@ -4,6 +4,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by sxf on 15-6-29.
@@ -27,7 +28,18 @@ public class Mail {
     }
 
     public void PostMail(String subject, String content, String from, String... to) {
+        Properties props = new Properties();
+        props.put("mail.smtp.host", hostname);
+        props.put("mail.smtp.auth", "true");
 
+
+        Authenticator auth = new Authenticator() {
+            public PasswordAuthentication getPasswordAuthentication()
+            {
+                return new PasswordAuthentication(username, password);
+            }
+        };
     }
+
 
 }
