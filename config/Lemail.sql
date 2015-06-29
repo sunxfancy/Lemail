@@ -59,7 +59,8 @@ CREATE TABLE `inbox` (
   `tag` varchar(200) DEFAULT NULL,
   `belong_user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_inbox_belong` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_inbox_belong_idx` (`belong_user_id`),
+  CONSTRAINT `fk_inbox_belong` FOREIGN KEY (`belong_user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -206,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-06-29 14:56:54
+-- Dump completed on 2015-06-29 18:42:27

@@ -2,4 +2,6 @@
 *.iml
 target
 out
+*.*~
 /src/main/resources/hibernate.cfg.xml
+
