@@ -19,10 +19,7 @@ public class User implements Serializable{
     private String role;
     private String username;
     private String password;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id")
-    private Department department;
+    private int department_id;
 
     /**
      * 创建一个新用户，必须有这些信息
@@ -30,14 +27,15 @@ public class User implements Serializable{
      * @param password 密码
      * @param name 显示用姓名
      * @param role 角色信息，存入几个字符，M-manager管理员，D-dispatcher分发者，H-handler处理者，R-reviewer审阅者
-     * @param department 部门所属，数据库中存放的是外键id，这里映射成了对象
+     * @param departmentId 部门所属id，数据库中存放的是外键id，这里映射成了对象
      */
-    public User(String username, String password, String name, String role, Department department) {
+
+    public User(String username, String password, String name, String role, int departmentId) {
         this.name = name;
         this.role = role;
         this.username = username;
         this.password = encode(password);
-        this.department = department;
+        this.department_id = departmentId;
     }
 
     public User() {
@@ -103,14 +101,14 @@ public class User implements Serializable{
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = encode(password);
     }
 
-    public Department getDepartment() {
-        return department;
+    public int getDepartmentId() {
+        return department_id;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartmentId(int departmentId) {
+        this.department_id = departmentId;
     }
 }
