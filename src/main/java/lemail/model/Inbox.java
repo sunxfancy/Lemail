@@ -3,6 +3,8 @@ package lemail.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * 收件箱
@@ -33,6 +35,11 @@ public class Inbox implements Serializable {
     private String tag;
     @Column(name = "`belong_user_id`")
     private Integer belong_user_id;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "`user_inbox`",
+            joinColumns = {@JoinColumn(name = "`inbox_id`")},
+            inverseJoinColumns = {@JoinColumn(name = "`user_id`")})
+    private Set<User> readers = new LinkedHashSet<User>();
 
     public Inbox(String subject, String content, Date date, String from) {
         this.subject = subject;
@@ -124,5 +131,9 @@ public class Inbox implements Serializable {
 
     public void setBelongUserId(Integer belongUserId) {
         this.belong_user_id = belongUserId;
+    }
+
+    public Set<User> getReaders() {
+        return readers;
     }
 }

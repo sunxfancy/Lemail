@@ -14,16 +14,16 @@ import java.util.Date;
 
 @Entity
 @Table(name = "`outbox`")
-public class Outbox implements Serializable{
+public class Outbox implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
     private Integer id;
     @Column(name = "`subject`")
     private String subject;
-    @Column(name = "`content`",columnDefinition = "MEDIUMTEXT")
+    @Column(name = "`content`", columnDefinition = "MEDIUMTEXT")
     private String content;
-    @Column(name="`attachment`",columnDefinition = "TEXT")
+    @Column(name = "`attachment`", columnDefinition = "TEXT")
     private String attachment;
     @Column(name = "`date`")
     private Date date;
@@ -44,7 +44,7 @@ public class Outbox implements Serializable{
         this.to = to;
     }
 
-    public Outbox(){
+    public Outbox() {
 
     }
 

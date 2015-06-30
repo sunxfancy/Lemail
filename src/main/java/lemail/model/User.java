@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * 用户的模型类
@@ -26,6 +29,10 @@ public class User implements Serializable {
     private String password;
     @Column(name = "`department_id`")
     private Integer department_id;
+    @Column(name = "`default_checker`")
+    private Integer default_checker;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "readers")
+    private Set<Inbox> mails = new LinkedHashSet<Inbox>();
 
     /**
      * 创建一个新用户，必须有这些信息
@@ -115,4 +122,17 @@ public class User implements Serializable {
     public void setDepartmentId(Integer departmentId) {
         this.department_id = departmentId;
     }
+
+    public Integer getDefaultChecker() {
+        return default_checker;
+    }
+
+    public void setDefaultChecker(Integer defaultChecker) {
+        this.default_checker = defaultChecker;
+    }
+
+    public Set<Inbox> getMails() {
+        return mails;
+    }
+
 }

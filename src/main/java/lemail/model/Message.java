@@ -88,11 +88,11 @@ public class Message implements Serializable {
         this.state = state;
     }
 
-    public Integer getMail_checked_id() {
+    public Integer getMailCheckedId() {
         return mail_checked_id;
     }
 
-    public void setMail_checked_id(Integer mail_checked_id) {
-        this.mail_checked_id = mail_checked_id;
+    public void setMailCheckedId(Integer mailCheckedId) {
+        this.mail_checked_id = mailCheckedId;
     }
 }
