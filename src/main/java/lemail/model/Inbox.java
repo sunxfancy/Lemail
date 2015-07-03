@@ -163,8 +163,28 @@ public class Inbox implements Serializable {
         }
         str = String.format("{\"id\":%d, \"subject\":\"%s\", \"content\":\"%s\"," +
                         "\"state\":%d, \"date\":\"%s\", \"attachment\":%s, \"from\":\"%s\"," +
-                        "\"review\":%s,\"tag\":%s,\"belong_user_id\":%d}",
-                id, subject, content, state, format.format(date), attachment, from, tmp_review, tmp_tag, belong_user_id);
+                        "\"review\":%s,\"tag\":%s,\"belong_user_id\":%d,\"readers\":%s}",
+                id, subject, content, state, format.format(date), attachment, from, tmp_review, tmp_tag, belong_user_id, formatReaders());
         return str;
+    }
+
+    private String formatReaders() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (User reader : readers) {
+            sb.append("{\"id\":");
+            sb.append(reader.getId());
+            sb.append(",");
+            sb.append("\"name\":\"");
+            sb.append(reader.getName());
+            sb.append("\"}");
+            sb.append(',');
+        }
+        if (sb.length() > 1) {
+            sb.setCharAt(sb.length() - 1, ']');
+        } else {
+            sb.append("]");
+        }
+        return sb.toString();
     }
 }
