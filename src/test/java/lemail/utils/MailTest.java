@@ -2,6 +2,9 @@ package lemail.utils;
 
 import junit.framework.TestCase;
 
+import javax.mail.Flags;
+import javax.mail.Message;
+
 public class MailTest extends TestCase {
 
     public void testPostMail() throws Exception {
@@ -9,8 +12,21 @@ public class MailTest extends TestCase {
         mail.PostMail("测试一下", "测试邮件啊。。。。", "lemailtest@sina.com");
     }
 
-    public void testRetrieveAllMailMessage() throws Exception {
+    public void testGetBox() throws Exception {
         Mail mail = new Mail("lemailtest@sina.com", "1234qwer", "imap.sina.com");
-        mail.retrieveAllMailMessage();
+        Message[] msgs = mail.getBox("INBOX");
+        for (Message msg : msgs) {
+            System.out.println("Subject:" + msg.getSubject());
+            boolean b = msg.getFlags().contains(Flags.Flag.SEEN);
+            if (!b) {
+                System.out.println("这封信你还没读呢");
+                msg.setFlag(Flags.Flag.SEEN, true);
+            }
+
+        }
+        mail.getBox("SENT");
+        mail.getBox("DRAFTS");// 草稿
+        mail.getBox("TRASH"); // 已删除
+        mail.getBox("JUNK");  // 垃圾邮件
     }
 }
