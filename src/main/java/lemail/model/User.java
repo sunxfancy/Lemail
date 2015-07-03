@@ -135,4 +135,41 @@ public class User implements Serializable {
         return mails;
     }
 
+    public String toJson() {
+        String str;
+        String checker;
+        int[] roles = parseRole();
+        if (default_checker == null) {
+            checker = "null";
+        } else {
+            checker = default_checker.toString();
+        }
+        str = String.format("{\"id\":%d, \"username\":\"%s\", \"name\":\"%s\"," +
+                        "\"manager\":%d, \"dispatcher\":%d, \"handle\":%d, \"reviewer\":%d," +
+                        "\"checker\":%s}",
+                id, username, name,
+                roles[0], roles[1], roles[2], roles[3],
+                checker);
+        return str;
+    }
+
+    private int[] parseRole() {
+        int[] roles = new int[4];
+        for (int i = 0; i < 4; i++) {
+            roles[i] = 0;
+        }
+        if (role.contains("M")) {
+            roles[0] = 1;
+        }
+        if (role.contains("D")) {
+            roles[1] = 1;
+        }
+        if (role.contains("H")) {
+            roles[2] = 1;
+        }
+        if (role.contains("R")) {
+            roles[3] = 1;
+        }
+        return roles;
+    }
 }

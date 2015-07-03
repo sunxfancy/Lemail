@@ -1,11 +1,11 @@
 package lemail.api;
 
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import lemail.model.User;
 import lemail.utils.Action;
 import lemail.utils.DBSession;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.exception.ConstraintViolationException;
 
 
 /**
@@ -28,7 +28,8 @@ public class Auth {
             return Action.error(1000, "找不到用户");
         }
         if (u.check_passwd(password)) {
-            return Action.text("true");
+            Action.echojson(0, "success", u.toJson());
+            return null;
         }
         return Action.error(1001, "密码错误");
     }
@@ -38,6 +39,7 @@ public class Auth {
     }
 
     public String signup() {
+        System.out.println("xxxx");
         User u = new User(username, password, name, role, department_id);
         if (default_checker != null) {
             u.setDefaultChecker(default_checker);
@@ -48,9 +50,10 @@ public class Auth {
             s.beginTransaction();
             s.save(u);
             s.getTransaction().commit();
+            Action.echojson(0, "success", u.toJson());
         } catch (Exception ex) {
             s.getTransaction().rollback();
-            if (ex instanceof MySQLIntegrityConstraintViolationException) {
+            if (ex instanceof ConstraintViolationException) {
                 Action.error(1002, "用户已存在");
             } else {
                 Action.error(-1, "未知错误");

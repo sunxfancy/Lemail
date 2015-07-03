@@ -21,10 +21,10 @@ public class Action {
         String str;
         ServletActionContext.getResponse().setContentType("application/json;charset=UTF-8");
         if (data != null) {
-            str = String.format("{'status':%d, 'message':'%s', 'data' = '%s'}",
+            str = String.format("{\"status\":%d, \"message\":\"%s\", \"data\":%s}",
                     status, message, data);
         } else {
-            str = String.format("{'status':%d, 'message':'%s'}",
+            str = String.format("{\"status\":%d, \"message\":\"%s\"}",
                     status, message);
         }
         try {
