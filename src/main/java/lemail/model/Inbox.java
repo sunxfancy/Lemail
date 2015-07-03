@@ -168,6 +168,28 @@ public class Inbox implements Serializable {
         return str;
     }
 
+    public String toJsonNoData() {
+        String str;
+        String tmp_tag;
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        String tmp_review = "null";
+        if (review != null && review) {
+            tmp_review = "true";
+        } else if (review != null && !review) {
+            tmp_review = "false";
+        }
+        if (tag == null) {
+            tmp_tag = "null";
+        } else {
+            tmp_tag = "\"" + tag + "\"";
+        }
+        str = String.format("{\"id\":%d, \"subject\":\"%s\", " +
+                        "\"state\":%d, \"date\":\"%s\", \"attachment\":%s, \"from\":\"%s\"," +
+                        "\"review\":%s,\"tag\":%s,\"belong_user_id\":%d}",
+                id, subject, state, format.format(date), attachment, from, tmp_review, tmp_tag, belong_user_id);
+        return str;
+    }
+
     private String formatReaders() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");

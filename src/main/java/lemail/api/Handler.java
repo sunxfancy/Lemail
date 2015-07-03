@@ -23,20 +23,34 @@ public class Handler {
         return null;
     }
 
+
+    public String id;
+    public String getInboxMail() {
+        try {
+            checkUser();
+
+            return null;
+        } catch (HandlerException e) {
+            e.printStackTrace();
+            return Action.error(e.id, e.getMessage());
+        }
+    }
+
     /**
      * 获取用户的全部邮件
      */
     public String getAll() {
         try {
-            User u = checkUser();
+            checkUser();
+            int uid = (Integer)Action.getSession("uid");
             List<Inbox> list = DBSession.find_list(
                 Inbox.class,
                 Order.desc("date"),
-                Restrictions.eq("belong_user_id", u.getId()));
+                Restrictions.eq("belong_user_id", uid));
             StringBuilder sb = new StringBuilder();
             sb.append("[");
             for (Inbox in : list) {
-                sb.append(in.toJson());
+                sb.append(in.toJsonNoData());
                 sb.append(',');
             }
             if (sb.length() > 1)
@@ -54,18 +68,20 @@ public class Handler {
      * 获取用户
      */
     private User getUser() {
-        return (User)Action.getSession("uid");
+        Integer uid = (Integer)Action.getSession("uid");
+        return (User) DBSession.find_first(
+                User.class, Restrictions.eq("id", uid));
     }
 
     /**
      * 获取用户并检查
      * @throws HandlerException 报告用户未登录或无权限错误
      */
-    private User checkUser() throws HandlerException {
-        User u = getUser();
-        if (u == null) throw new HandlerException(401, "用户未登录");
-        if (!u.checkRole("H")) throw new HandlerException(500, "用户缺少处理者权限");
-        return u;
+    private void checkUser() throws HandlerException {
+        Integer uid = (Integer)Action.getSession("uid");
+        String role = (String)Action.getSession("role");
+        if (uid == null) throw new HandlerException(401, "用户未登录");
+        if (!role.contains("H")) throw new HandlerException(500, "用户缺少处理者权限");
     }
 
     private class HandlerException extends Exception{
