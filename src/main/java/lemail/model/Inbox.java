@@ -143,4 +143,17 @@ public class Inbox implements Serializable {
     public Set<User> getReaders() {
         return readers;
     }
+
+    public String toJson() {
+        String str;
+        int temp_review=0;
+        if (review==true){
+            temp_review=1;
+        }
+        str = String.format("{\"id\":%d, \"subject\":\"%s\", \"content\":\"%s\"," +
+                "\"state\":%d, \"date\":%s, \"attachment\":%s, \"from\":%s," +
+                "\"review\":%d,\"tag\":%s,\"belong_user_id\":%d}",
+                id,subject,content,state,date,attachment,from,temp_review,tag,belong_user_id);
+        return str;
+    }
 }

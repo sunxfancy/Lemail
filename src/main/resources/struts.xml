@@ -10,6 +10,9 @@
                 <action name="signup" class="lemail.api.Auth" method="signup" />
                 <action name="logout" class="lemail.api.Auth" method="logout" />
         </package>
+        <package name="dispatcher" extends="struts-default" namespace="/api/dispatcher">
+                <action name="getall" class="lemail.api.Dispatcher" method="getAll" />
+        </package>
         <package name="test" extends="struts-default">
                 <action name="test" class="lemail.api.Test" method="test"/>
         </package>
