@@ -36,6 +36,8 @@ public class Auth {
     }
 
     public String logout() {
+        Action.setSession("uid", null);
+        Action.echojson(0, "success", null);
         return null;
     }
 
