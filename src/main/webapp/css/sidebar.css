@@ -1,0 +1,8 @@
+.sidebar-div{
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    background-color: #aaaaaa;
+    width: 200px;
+}

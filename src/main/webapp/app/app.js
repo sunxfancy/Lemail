@@ -4,6 +4,24 @@
 
 var LeMailModule = angular.module('LeMailModule', ['ngRoute']);
 
-LeMailModule.controller('LeMailController',['$scope', function($scope){
-    $scope.url = "login.html";
+LeMailModule.config(['$routeProvider', function($routeProvider){
+    $routeProvider.when('/login',{
+        templateUrl: '/template/login.html'
+    }).otherwise({
+        templateUrl: '/template/home.html'
+    });
 }]);
+
+LeMailModule.controller('LeMailController',['$scope', function($scope){
+    $scope.title = "test title";
+    $scope.user = {
+        name: '',
+        password:''
+    };
+    $scope.roles = {
+
+    };
+
+}]);
+
+

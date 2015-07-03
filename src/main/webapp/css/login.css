@@ -1,0 +1,67 @@
+body{
+    background-color: #ffffff;
+}
+
+.LeMail-label{
+    font-family: "Arial";
+    color: #4C4C4C;
+    font-size: 100px;
+    position: absolute;
+    top: 22%;
+    left: 150px;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.login-box{
+    background: #4C4C4C;
+    position: absolute;
+    top: 35%;
+    bottom: 25%;
+    left: 0;
+    right: 0;
+}
+
+.login-box label{
+    font-family: "黑体";
+    font-size: 45px;
+    letter-spacing: 15px;
+    color: #ffffff;
+    position: relative;
+    top: 10px;
+    left: 150px;
+}
+
+.login-form {
+    background-color: #e8e8e8;
+    position: absolute;
+    top: -100px;
+    right: 50px;
+    bottom: 50px;
+    width: 300px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0px 8px 8px 1px #181818;
+}
+
+.login-form .form-title{
+    font-size: 80px;
+    color: #FEFEFE;
+    text-indent: 15px;
+}
+
+.login-form div{
+    margin-bottom: 20px;
+}
+
+#username, #password{
+    width: 100%;
+    padding: 10px;
+}
+
+#submit-btn{
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    border-radius: 0px;
+    outline: none;
+    border: none;
+}
