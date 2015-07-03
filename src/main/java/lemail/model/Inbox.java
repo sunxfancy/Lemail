@@ -2,6 +2,7 @@ package lemail.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -43,6 +44,7 @@ public class Inbox implements Serializable {
 
     /**
      * 收件箱中的每一封邮件
+     *
      * @param subject 主题
      * @param content 内容
      * @param date    时间
@@ -146,14 +148,23 @@ public class Inbox implements Serializable {
 
     public String toJson() {
         String str;
-        int temp_review=0;
-        if (review==true){
-            temp_review=1;
+        String tmp_tag;
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        String tmp_review = "null";
+        if (review != null && review) {
+            tmp_review = "true";
+        } else if (review != null && !review) {
+            tmp_review = "false";
+        }
+        if (tag == null) {
+            tmp_tag = "null";
+        } else {
+            tmp_tag = "\"" + tag + "\"";
         }
         str = String.format("{\"id\":%d, \"subject\":\"%s\", \"content\":\"%s\"," +
-                "\"state\":%d, \"date\":%s, \"attachment\":%s, \"from\":%s," +
-                "\"review\":%d,\"tag\":%s,\"belong_user_id\":%d}",
-                id,subject,content,state,date,attachment,from,temp_review,tag,belong_user_id);
+                        "\"state\":%d, \"date\":\"%s\", \"attachment\":%s, \"from\":\"%s\"," +
+                        "\"review\":%s,\"tag\":%s,\"belong_user_id\":%d}",
+                id, subject, content, state, format.format(date), attachment, from, tmp_review, tmp_tag, belong_user_id);
         return str;
     }
 }

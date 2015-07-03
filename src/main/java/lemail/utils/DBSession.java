@@ -8,6 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class DBSession {
         s.close();
         return rs;
     }
+
     public static Object first(DetachedCriteria dc) {
         Session s = getSession();
         Criteria c = dc.getExecutableCriteria(s);
@@ -39,13 +41,20 @@ public class DBSession {
         return d;
     }
 
-    public static List find_list(Class T, Criterion... res) {
+    public static List find_list(Class T, Order order, Criterion... res) {
         DetachedCriteria dc = DetachedCriteria.forClass(T);
+        if (order != null)
+            dc.addOrder(order);
         for (Criterion r : res) {
             dc.add(r);
         }
         return list(dc);
     }
+
+    public static List find_list(Class T, Criterion... res) {
+        return find_list(T, null, res);
+    }
+
     public static Object find_first(Class T, Criterion... res) {
         DetachedCriteria dc = DetachedCriteria.forClass(T);
         for (Criterion r : res) {
