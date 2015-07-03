@@ -5,8 +5,13 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-        <package name="api" extends="struts-default">
-
+        <package name="user" extends="struts-default" namespace="/api/user">
+                <action name="login" class="lemail.api.Auth" method="login" />
+                <action name="signup" class="lemail.api.Auth" method="signup" />
+                <action name="logout" class="lemail.api.Auth" method="logout" />
+        </package>
+        <package name="dispatcher" extends="struts-default" namespace="/api/dispatcher">
+                <action name="getall" class="lemail.api.Dispatcher" method="getAll" />
         </package>
         <package name="test" extends="struts-default">
                 <action name="test" class="lemail.api.Test" method="test"/>

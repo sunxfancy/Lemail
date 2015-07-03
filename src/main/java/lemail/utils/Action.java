@@ -12,8 +12,21 @@ import java.util.Objects;
  * Created by sxf on 15-6-28.
  */
 public class Action {
-    public static void echojson(String str) {
+    /**
+     * @param status
+     * @param message
+     * @param data    格式化后数据段json字符串，若没有设置为null
+     */
+    public static void echojson(int status, String message, String data) {
+        String str;
         ServletActionContext.getResponse().setContentType("application/json;charset=UTF-8");
+        if (data != null) {
+            str = String.format("{\"status\":%d, \"message\":\"%s\", \"data\":%s}",
+                    status, message, data);
+        } else {
+            str = String.format("{\"status\":%d, \"message\":\"%s\"}",
+                    status, message);
+        }
         try {
             PrintWriter pw = ServletActionContext.getResponse().getWriter();
             pw.println(str);
@@ -41,8 +54,8 @@ public class Action {
         return null;
     }
 
-    public static String error(String str) {
-        println("{error:\""+str+"\"}");
+    public static String error(int status, String message) {
+        echojson(status, message, null);
         return null;
     }
 
@@ -50,7 +63,7 @@ public class Action {
         return ActionContext.getContext().getSession().get(key);
     }
 
-    public static Object setSession(String key, Objects value) {
+    public static Object setSession(String key, Object value) {
         return ActionContext.getContext().getSession().put(key, value);
     }
 }

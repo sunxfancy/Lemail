@@ -2,7 +2,10 @@ package lemail.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * 收件箱
@@ -33,7 +36,20 @@ public class Inbox implements Serializable {
     private String tag;
     @Column(name = "`belong_user_id`")
     private Integer belong_user_id;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "`user_inbox`",
+            joinColumns = {@JoinColumn(name = "`inbox_id`")},
+            inverseJoinColumns = {@JoinColumn(name = "`user_id`")})
+    private Set<User> readers = new LinkedHashSet<User>();
 
+    /**
+     * 收件箱中的每一封邮件
+     *
+     * @param subject 主题
+     * @param content 内容
+     * @param date    时间
+     * @param from    发件人
+     */
     public Inbox(String subject, String content, Date date, String from) {
         this.subject = subject;
         this.content = content;
@@ -124,5 +140,51 @@ public class Inbox implements Serializable {
 
     public void setBelongUserId(Integer belongUserId) {
         this.belong_user_id = belongUserId;
+    }
+
+    public Set<User> getReaders() {
+        return readers;
+    }
+
+    public String toJson() {
+        String str;
+        String tmp_tag;
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        String tmp_review = "null";
+        if (review != null && review) {
+            tmp_review = "true";
+        } else if (review != null && !review) {
+            tmp_review = "false";
+        }
+        if (tag == null) {
+            tmp_tag = "null";
+        } else {
+            tmp_tag = "\"" + tag + "\"";
+        }
+        str = String.format("{\"id\":%d, \"subject\":\"%s\", \"content\":\"%s\"," +
+                        "\"state\":%d, \"date\":\"%s\", \"attachment\":%s, \"from\":\"%s\"," +
+                        "\"review\":%s,\"tag\":%s,\"belong_user_id\":%d,\"readers\":%s}",
+                id, subject, content, state, format.format(date), attachment, from, tmp_review, tmp_tag, belong_user_id, formatReaders());
+        return str;
+    }
+
+    private String formatReaders() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (User reader : readers) {
+            sb.append("{\"id\":");
+            sb.append(reader.getId());
+            sb.append(",");
+            sb.append("\"name\":\"");
+            sb.append(reader.getName());
+            sb.append("\"}");
+            sb.append(',');
+        }
+        if (sb.length() > 1) {
+            sb.setCharAt(sb.length() - 1, ']');
+        } else {
+            sb.append("]");
+        }
+        return sb.toString();
     }
 }

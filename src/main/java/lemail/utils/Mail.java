@@ -2,9 +2,7 @@ package lemail.utils;
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import javax.mail.search.SearchTerm;
 import java.util.Properties;
 
 /**
@@ -16,19 +14,17 @@ public class Mail {
     private String username;
     private String password;
     private String hostname;
-    private String emailprovider = "imap";
+    private String hostname_send;
     private Authenticator auth;
 
-
-    public Mail(String _username, String _password, String _hostname) {
+    public Mail(String _username, String _password, String _hostname, String _hostname_send) {
         this.username = _username;
         this.password = _password;
         this.hostname = _hostname;
+        this.hostname_send = _hostname_send;
 
         auth = new MyAuthenticator(username,password);
     }
-
-    private List<String> mail_list = new LinkedList<String>();
 
     public void GetMail() {
 
@@ -87,42 +83,31 @@ public class Mail {
 
 
     // 得到所有的邮件
-    public Message[] retrieveAllMailMessage() throws Exception {
-        Session session;
-        Store store;
-        Folder folder;
-        Folder inbox_folder;
-
+    public Message[] getBox(String boxname) throws Exception {
         Properties props=System.getProperties();
         props.setProperty("mail.pop3s.rsetbeforequit","true");
         props.setProperty("mail.pop3.rsetbeforequit","true");
-        session=Session.getInstance(props,null);
+        Session session=Session.getInstance(props,null);
         // 打印出错误信息
         session.setDebug(true);
 
-        store=session.getStore(emailprovider);
-        store.connect(hostname, username, password);
-        folder=store.getFolder("INBOX");
+        Store store = session.getStore(hostname_send.split("\\.")[0]);
+        store.connect(hostname_send, username, password);
+        Folder folder = store.getFolder(boxname);
         if( folder==null )
             throw new Exception("No default folder");
-        inbox_folder = folder;
-        inbox_folder.open(Folder.READ_WRITE);
-
-        Message[] msgs = inbox_folder.getMessages();
-
-        for (Message msg : msgs) {
-            System.out.println("################################");
-            if (msg != null) {
-                System.out.println("邮件标题:" + msg.getSubject());
-                System.out.println("邮件发送者：" + Arrays.toString(msg.getFrom()));
-                System.out.println("邮件发送时间：" + msg.getSentDate());
-                System.out.println("邮件正文:"
-                        + ((msg.getContent() == null) ? "没有正文"
-                        : msg.getContent()));
+        folder.open(Folder.READ_WRITE);
+        return folder.search(new SearchTerm() {
+            @Override
+            public boolean match(Message message) {
+                try {
+                    return !(message.getFlags().contains(Flags.Flag.SEEN));
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                    return false;
+                }
             }
-        }
-
-        return msgs;
+        });
     }
 
 
