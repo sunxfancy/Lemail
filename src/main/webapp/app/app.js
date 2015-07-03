@@ -14,10 +14,7 @@ LeMailModule.config(['$routeProvider', function($routeProvider){
 
 LeMailModule.controller('LeMailController',['$scope', function($scope){
     $scope.title = "test title";
-    $scope.user = {
-        name: '',
-        password:''
-    };
+
     $scope.roles = {
 
     };

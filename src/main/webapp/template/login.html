@@ -1,19 +1,26 @@
 <link rel="stylesheet" href="/css/login.css"/>
-<div class="loginController" class="login-div">
+<div ng-controller="loginController" class="login-div">
     <div class="LeMail-label">Lemail</div>
     <div class="login-box">
         <label>电子邮件处理系统</label>
+
         <div class="login-form">
-            <div class="form-title col-sm-12">登录</div>
-            <div class="col-sm-12">
-                <input type="text" id="username" placeholder="请输入用户名"/>
-            </div>
-            <div class="col-sm-12">
-                <input type="text" id="password" placeholder="请输入密码"/>
-            </div>
-            <div class="col-sm-12">
-                <button id="submit-btn" class="col-sm-push-9 col-sm-3">登录</button>
-            </div>
+            <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
+                <div class="form-title col-sm-12">登录</div>
+                <div class="col-sm-12">
+                    <input type="text" ng-required="true" ng-minlength="6" name="username" id="username" ng-model="userinfo.username"
+                           placeholder="请输入用户名"/>
+                    <p ng-show="userForm.username.$invalid && !userForm.username.$pristine && submitted" class="help-block">用户名不少于6位</p>
+                </div>
+                <div class="col-sm-12">
+                    <input type="password" ng-required="true" ng-minlength="6" name="password" id="password" ng-model="userinfo.password"
+                           placeholder="请输入密码"/>
+                </div>
+                <div class="col-sm-12">
+                    <button type="submit" id="submit-btn" class="col-sm-push-9 col-sm-3">登录</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
