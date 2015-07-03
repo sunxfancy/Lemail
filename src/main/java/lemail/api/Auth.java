@@ -29,6 +29,7 @@ public class Auth {
         }
         if (u.check_passwd(password)) {
             Action.setSession("uid", u.getId());
+            Action.setSession("role", u.getRole());
             Action.echojson(0, "success", u.toJson());
             return null;
         }
@@ -37,6 +38,7 @@ public class Auth {
 
     public String logout() {
         Action.setSession("uid", null);
+        Action.setSession("role", null);
         Action.echojson(0, "success", null);
         return null;
     }
@@ -54,6 +56,7 @@ public class Auth {
             s.save(u);
             s.getTransaction().commit();
             Action.setSession("uid", u.getId());
+            Action.setSession("role", u.getRole());
             Action.echojson(0, "success", u.toJson());
         } catch (Exception ex) {
             s.getTransaction().rollback();
