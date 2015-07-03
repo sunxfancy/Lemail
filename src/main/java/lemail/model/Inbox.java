@@ -34,6 +34,13 @@ public class Inbox implements Serializable {
     @Column(name = "`belong_user_id`")
     private Integer belong_user_id;
 
+    /**
+     * 收件箱中的每一封邮件
+     * @param subject 主题
+     * @param content 内容
+     * @param date    时间
+     * @param from    发件人
+     */
     public Inbox(String subject, String content, Date date, String from) {
         this.subject = subject;
         this.content = content;

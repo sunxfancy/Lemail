@@ -2,8 +2,10 @@ package lemail.utils;
 
 import junit.framework.TestCase;
 
+import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Message;
+import javax.mail.Multipart;
 
 public class MailTest extends TestCase {
 
@@ -17,12 +19,12 @@ public class MailTest extends TestCase {
         Message[] msgs = mail.getBox("INBOX");
         for (Message msg : msgs) {
             System.out.println("Subject:" + msg.getSubject());
+            System.out.println("Content:" + msg.getContent().toString());
             boolean b = msg.getFlags().contains(Flags.Flag.SEEN);
             if (!b) {
                 System.out.println("这封信你还没读呢");
                 msg.setFlag(Flags.Flag.SEEN, true);
             }
-
         }
         mail.getBox("SENT");
         mail.getBox("DRAFTS");// 草稿

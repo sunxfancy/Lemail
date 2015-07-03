@@ -2,8 +2,7 @@ package lemail.utils;
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import java.util.LinkedList;
-import java.util.List;
+import javax.mail.search.SearchTerm;
 import java.util.Properties;
 
 /**
@@ -18,7 +17,6 @@ public class Mail {
     private String emailprovider = "imap";
     private Authenticator auth;
 
-
     public Mail(String _username, String _password, String _hostname) {
         this.username = _username;
         this.password = _password;
@@ -26,8 +24,6 @@ public class Mail {
 
         auth = new MyAuthenticator(username,password);
     }
-
-    private List<String> mail_list = new LinkedList<String>();
 
     public void GetMail() {
 
@@ -100,8 +96,17 @@ public class Mail {
         if( folder==null )
             throw new Exception("No default folder");
         folder.open(Folder.READ_WRITE);
-
-        return folder.getMessages();
+        return folder.search(new SearchTerm() {
+            @Override
+            public boolean match(Message message) {
+                try {
+                    return !(message.getFlags().contains(Flags.Flag.SEEN));
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+        });
     }
 
 
