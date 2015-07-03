@@ -63,7 +63,7 @@ public class Action {
         return ActionContext.getContext().getSession().get(key);
     }
 
-    public static Object setSession(String key, Objects value) {
+    public static Object setSession(String key, Object value) {
         return ActionContext.getContext().getSession().put(key, value);
     }
 }

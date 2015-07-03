@@ -28,6 +28,7 @@ public class Auth {
             return Action.error(1000, "找不到用户");
         }
         if (u.check_passwd(password)) {
+            Action.setSession("uid", u.getId());
             Action.echojson(0, "success", u.toJson());
             return null;
         }
@@ -50,6 +51,7 @@ public class Auth {
             s.beginTransaction();
             s.save(u);
             s.getTransaction().commit();
+            Action.setSession("uid", u.getId());
             Action.echojson(0, "success", u.toJson());
         } catch (Exception ex) {
             s.getTransaction().rollback();
