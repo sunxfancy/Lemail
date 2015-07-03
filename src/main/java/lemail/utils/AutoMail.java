@@ -37,15 +37,15 @@ public class AutoMail {
         mail = new Mail(username, password, hostname);
         save();
     }
-
     /**
      * 核心更新方法，每次调用，都会向邮件客户端拉取邮件
+     * 如果获取不到邮件，会抛出异常
+     * @throws Exception 无法获得邮件的信息
      */
-    public void Updata() {
-        try {
-            Message[] msgs = mail.getBox("INBOX");
-            for (Message msg : msgs) {
-                msg.getFlags().add(Flags.Flag.SEEN);
+    public void Updata() throws Exception {
+        Message[] msgs = mail.getBox("INBOX");
+        for (Message msg : msgs) {
+            try {
                 String content = null;
                 StringBuilder sb = null;
                 if (msg.getContentType().contains("multipart")) {
@@ -62,10 +62,11 @@ public class AutoMail {
                 );
                 if (sb != null)
                     in_msg.setAttachment(sb.toString());
-
+                DBSession.getSession().save(in_msg);
+                msg.getFlags().add(Flags.Flag.SEEN);
+            }catch(Exception e){
+                e.printStackTrace();
             }
-        }catch(Exception e){
-            e.printStackTrace();
         }
     }
 
@@ -97,6 +98,8 @@ public class AutoMail {
                 while ((k = in.read(buffer)) > 0) {
                     out.write(buffer, 0, k);
                 }
+                in.close();
+                out.close();
             }
         }
         return content;
