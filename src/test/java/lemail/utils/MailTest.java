@@ -10,12 +10,12 @@ import javax.mail.Multipart;
 public class MailTest extends TestCase {
 
     public void testPostMail() throws Exception {
-        Mail mail = new Mail("lemailtest@sina.com", "1234qwer", "smtp.sina.com");
+        Mail mail = new Mail("lemailtest@sina.com", "1234qwer", "smtp.sina.com", "imap.sina.com");
         mail.PostMail("测试一下", "测试邮件啊。。。。", "lemailtest@sina.com");
     }
 
     public void testGetBox() throws Exception {
-        Mail mail = new Mail("lemailtest@sina.com", "1234qwer", "imap.sina.com");
+        Mail mail = new Mail("lemailtest@sina.com", "1234qwer", "smtp.sina.com", "imap.sina.com");
         Message[] msgs = mail.getBox("INBOX");
         for (Message msg : msgs) {
             System.out.println("Subject:" + msg.getSubject());

@@ -20,29 +20,35 @@ public class AutoMail {
     private String username;
     private String password;
     private String hostname;
-
+    private String hostname_send;
     // 路径配置项
     private final String path="save.prop";
     private final String attachment_path = "./attachment/";
 
     public AutoMail() {
         if (!load()) return;
-        mail = new Mail(username, password, hostname);
+        mail = new Mail(username, password, hostname, hostname_send);
     }
 
-    public void setProp(String username, String password, String hostname, String frequency) {
+    public void setProp(String username, String password, String hostname, String hostname_send) {
         this.username = username;
         this.password = password;
         this.hostname = hostname;
-        mail = new Mail(username, password, hostname);
+        this.hostname_send = hostname_send;
+        mail = new Mail(username, password, hostname,hostname_send);
         save();
+        try {
+            Update();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     /**
      * 核心更新方法，每次调用，都会向邮件客户端拉取邮件
      * 如果获取不到邮件，会抛出异常
      * @throws Exception 无法获得邮件的信息
      */
-    public void Updata() throws Exception {
+    public void Update() throws Exception {
         Message[] msgs = mail.getBox("INBOX");
         for (Message msg : msgs) {
             try {
@@ -54,6 +60,10 @@ public class AutoMail {
                 } else {
                     content = msg.getContent().toString();
                 }
+                System.out.println(msg.getSubject());
+                System.out.println(content);
+                System.out.println(msg.getSentDate());
+                System.out.println(msg.getFrom()[0].toString());
                 Inbox in_msg = new Inbox(
                     msg.getSubject(),
                     content,
@@ -118,6 +128,8 @@ public class AutoMail {
             writer.write("\n");
             writer.write(hostname);
             writer.write("\n");
+            writer.write(hostname_send);
+            writer.write("\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -133,6 +145,7 @@ public class AutoMail {
             username = br.readLine();
             password = br.readLine();
             hostname = br.readLine();
+            hostname_send = br.readLine();
             br.close();
             return true;
         } catch (IOException e) {
@@ -157,4 +170,7 @@ public class AutoMail {
         return hostname;
     }
 
+    public String getHostname_send() {
+        return hostname_send;
+    }
 }
