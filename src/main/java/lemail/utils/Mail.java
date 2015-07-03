@@ -2,8 +2,7 @@ package lemail.utils;
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import java.util.LinkedList;
-import java.util.List;
+import javax.mail.search.SearchTerm;
 import java.util.Properties;
 
 /**
@@ -15,19 +14,17 @@ public class Mail {
     private String username;
     private String password;
     private String hostname;
-    private String emailprovider = "imap";
+    private String hostname_send;
     private Authenticator auth;
 
-
-    public Mail(String _username, String _password, String _hostname) {
+    public Mail(String _username, String _password, String _hostname, String _hostname_send) {
         this.username = _username;
         this.password = _password;
         this.hostname = _hostname;
+        this.hostname_send = _hostname_send;
 
         auth = new MyAuthenticator(username,password);
     }
-
-    private List<String> mail_list = new LinkedList<String>();
 
     public void GetMail() {
 
@@ -94,14 +91,23 @@ public class Mail {
         // 打印出错误信息
         session.setDebug(true);
 
-        Store store = session.getStore(emailprovider);
-        store.connect(hostname, username, password);
+        Store store = session.getStore(hostname_send.split("\\.")[0]);
+        store.connect(hostname_send, username, password);
         Folder folder = store.getFolder(boxname);
         if( folder==null )
             throw new Exception("No default folder");
         folder.open(Folder.READ_WRITE);
-
-        return folder.getMessages();
+        return folder.search(new SearchTerm() {
+            @Override
+            public boolean match(Message message) {
+                try {
+                    return !(message.getFlags().contains(Flags.Flag.SEEN));
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+        });
     }
 
 
