@@ -39,11 +39,11 @@ public class Auth {
     public String logout() {
         Action.setSession("uid", null);
         Action.setSession("role", null);
-        Action.echojson(0, "success", null);
+        Action.echojson(0, "success");
         return null;
     }
 
-    public String signup() {
+    public String signUp() {
         System.out.println("xxxx");
         User u = new User(username, password, name, role, department_id);
         if (default_checker != null) {
