@@ -33,8 +33,9 @@ public class Outbox implements Serializable {
     private String to;
     @Column(name = "`tag`")
     private String tag;
-    @Column(name = "`checker`")
-    private Integer checker;
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "checker")
+    private User checker;
 
     public Outbox(String subject, String content, Date date, String to) {
         this.subject = subject;
@@ -113,11 +114,11 @@ public class Outbox implements Serializable {
         this.tag = tag;
     }
 
-    public Integer getChecker() {
+    public User getChecker() {
         return checker;
     }
 
-    public void setChecker(Integer checker) {
+    public void setChecker(User checker) {
         this.checker = checker;
     }
 }
