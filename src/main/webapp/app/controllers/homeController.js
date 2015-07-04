@@ -3,4 +3,5 @@
  */
 LeMailModule.controller('homeController', ['$scope',function($scope){
     $scope.text = "hhhhh";
+    $scope.content_url = "/template/distribute/distribute.html";
 }]);

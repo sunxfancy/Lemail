@@ -1,0 +1,8 @@
+.content-div{
+    position: absolute;
+    top: 50px;
+    left: 200px;
+    right: 0;
+    bottom: 0;
+    background-color: #285e8e;
+}
