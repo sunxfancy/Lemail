@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="/css/sidebar.css"/>
 <div class="sidebar-div">
-    <fieldset>
     <ul ng-repeat="(key, value) in user.roles" ng-if="value == 1" class="clearfix">
-
+        <div class="division-div">
+            <span ng-bind="sidebarItems[key]['title']"></span>
+        </div>
         <li ng-repeat="item in sidebarItems[key]['item']">{{item}}</li>
     </ul>
-    </fieldset>
 </div>
