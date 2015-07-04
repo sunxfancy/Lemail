@@ -45,7 +45,7 @@ public class Auth {
     public String logout() {
         Action.setSession("uid", null);
         Action.setSession("role", null);
-        Action.echojson(0, "success", null);
+        Action.echojson(0, "success");
         return null;
     }
 
