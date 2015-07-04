@@ -2,11 +2,11 @@
 <html ng-app="LeMailModule" ng-controller="LeMailController">
 <head>
     <meta charset="UTF-8">
-    <title>{{title}}</title>
+    <title ng-bind="title"></title>
     <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"/>
 </head>
 <body>
-<div>
+<div ng-init="load()">
     <div ng-view></div>
 </div>
 </body>

@@ -4,32 +4,6 @@
 
 var LeMailModule = angular.module('LeMailModule', ['ngRoute']);
 
-angular.element(document).ready(function(){
-    $http({
-        url: '/api/user/getuser',
-        method: 'POST',
-        params: $scope.userinfo
-    }).success(function(response, status, headers, config){
-        console.log(response);
-        //console.log(status);
-        //console.log(headers);
-        //console.log(config);
-        if (response.status == 0){
-            // login success
-            var $injector = angular.bootstrap(document, ['LeMailModule']);
-            var $controller = $injector.get('$controller');
-            var LeMailController = $controller('LeMailController');
-            LeMailController.user = data;
-            $templateCache.removeAll();
-        }else if(response.status == 1000){
-
-        }else if(response.status == 1001){
-
-        }
-    }).error(function(response, status, headers, config){
-
-    });
-});
 
 LeMailModule.config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/login',{
@@ -39,7 +13,7 @@ LeMailModule.config(['$routeProvider', function($routeProvider){
     });
 }]);
 
-LeMailModule.controller('LeMailController',['$scope', function($scope){
+LeMailModule.controller('LeMailController',['$scope', '$http', '$location', function($scope, $http, $location){
     $scope.title = "登陆";
 
     $scope.user = {
@@ -59,6 +33,40 @@ LeMailModule.controller('LeMailController',['$scope', function($scope){
         $scope.user = data;
         $scope.title = "欢迎使用Lemail";
     });
+
+    $scope.signout = function(){
+        $http({
+            url: '/api/user/logout',
+            method: 'POST'
+        }).success(function(response, status, headers, config){
+            console.log(response);
+            if(response.status == 0){
+                $location.path("/login");
+                $scope.title = "登陆";
+            }
+        }).error(function(response, status, headers, config){
+
+        });
+    };
+
+    $scope.load = function(){
+        $http({
+            url: '/api/user/getuser',
+            method: 'POST'
+        }).success(function(response, status, headers, config){
+            console.log(response);
+            if (response.status == 0){
+                $scope.user = response.data;
+                $scope.title = "欢迎使用Lemail";
+                $templateCache.removeAll();
+            }else if(response.status == 401){
+                $location.path("/login");
+                $scope.title = "登陆";
+            }
+        }).error(function(response, status, headers, config){
+
+        });
+    }
 
 }]);
 
