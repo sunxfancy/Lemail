@@ -1,0 +1,18 @@
+
+.dis-main {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 30px;
+}
+
+.dis-list-new-btn {
+    margin-right: 8px;
+}
+
+.list-table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.list-table-unread {
+    font-weight: bold;
+}
