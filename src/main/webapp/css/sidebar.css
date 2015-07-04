@@ -6,3 +6,38 @@
     background-color: #aaaaaa;
     width: 200px;
 }
+
+.sidebar-div ul{
+    margin: 0 0 10px 0;
+    background-color: #ccc;
+    list-style: none;
+    padding: 0;
+}
+
+
+.sidebar-div li{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: medium;
+    text-indent: 25px;
+    cursor: pointer;
+    transition: background 150ms ease-in-out;
+}
+
+.sidebar-div li:hover{
+    background-color: #eeeeee;
+}
+
+.division-div{
+    border-bottom: 1px solid #bbbbbb;
+}
+
+.division-div span {
+    position: relative;
+    left: 80%;
+    top: 10px;
+    z-index: 5;
+    background-color: #cccccc;
+    font-size: small;
+}

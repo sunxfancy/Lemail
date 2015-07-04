@@ -1,7 +1,7 @@
 /**
  * Created by vvliebe on 15-7-4.
  */
-LeMailModule.controller('loginController', ['$scope','$http','$location',function($scope, $http, $location){
+LeMailModule.controller('loginController', ['$scope','$http','$location', '$templateCache',function($scope, $http, $location, $templateCache){
     $scope.text = "LEMAIL";
     $scope.userinfo = {
         username: '',
@@ -22,7 +22,9 @@ LeMailModule.controller('loginController', ['$scope','$http','$location',functio
                  //console.log(config);
                  if (response.status == 0){
                      // login success
-                     //$location.path("/home");
+                     $scope.$emit('login', response.data);
+                     $templateCache.removeAll();
+                     $location.path("/home");
                  }else if(response.status == 1000){
 
                  }else if(response.status == 1001){
