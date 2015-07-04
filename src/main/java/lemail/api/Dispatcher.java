@@ -53,7 +53,10 @@ public class Dispatcher {
         } else {
             Action.error(401, "分发人员未登录");
         }
+        return null;
+    }
 
+    public String dispatch() {
         return null;
     }
 }

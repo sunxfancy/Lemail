@@ -28,8 +28,9 @@ public class User implements Serializable {
     private String password;
     @Column(name = "`department_id`")
     private Integer department_id;
-    @Column(name = "`default_checker`")
-    private Integer default_checker;
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "default_checker")
+    private User checker;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "readers")
     private Set<Inbox> mails = new LinkedHashSet<Inbox>();
 
@@ -122,12 +123,12 @@ public class User implements Serializable {
         this.department_id = departmentId;
     }
 
-    public Integer getDefaultChecker() {
-        return default_checker;
+    public User getChecker() {
+        return checker;
     }
 
-    public void setDefaultChecker(Integer defaultChecker) {
-        this.default_checker = defaultChecker;
+    public void setChecker(User checker) {
+        this.checker = checker;
     }
 
     public Set<Inbox> getMails() {
@@ -138,17 +139,12 @@ public class User implements Serializable {
         String str;
         String checker;
         int[] roles = parseRole();
-        if (default_checker == null) {
-            checker = "null";
-        } else {
-            checker = default_checker.toString();
-        }
         str = String.format("{\"id\":%d, \"username\":\"%s\", \"name\":\"%s\"," +
                         "\"roles\":{\"manager\":%d, \"dispatcher\":%d, \"handler\":%d, \"reviewer\":%d}," +
                         "\"checker\":%s}",
                 id, username, name,
                 roles[0], roles[1], roles[2], roles[3],
-                checker);
+                formatChecker());
         return str;
     }
 
@@ -174,5 +170,15 @@ public class User implements Serializable {
             roles[3] = 1;
         }
         return roles;
+    }
+
+    private String formatChecker() {
+        String str;
+        if (checker == null)
+            str = "null";
+        else {
+            str = String.format("{\"id\":%d,\"name\":\"%s\"}", checker.getId(), checker.getName());
+        }
+        return str;
     }
 }

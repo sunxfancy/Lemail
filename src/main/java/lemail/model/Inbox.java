@@ -2,6 +2,7 @@ package lemail.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.lang.annotation.Target;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -34,8 +35,9 @@ public class Inbox implements Serializable {
     private Boolean review;
     @Column(name = "`tag`")
     private String tag;
-    @Column(name = "`belong_user_id`")
-    private Integer belong_user_id;
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "belong_user_id")
+    private User handler;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "`user_inbox`",
             joinColumns = {@JoinColumn(name = "`inbox_id`")},
@@ -134,12 +136,12 @@ public class Inbox implements Serializable {
         this.tag = tag;
     }
 
-    public Integer getBelongUserId() {
-        return belong_user_id;
+    public User getHandler() {
+        return handler;
     }
 
-    public void setBelongUserId(Integer belongUserId) {
-        this.belong_user_id = belongUserId;
+    public void setHandler(User handler) {
+        this.handler = handler;
     }
 
     public Set<User> getReaders() {
@@ -163,8 +165,8 @@ public class Inbox implements Serializable {
         }
         str = String.format("{\"id\":%d, \"subject\":\"%s\", \"content\":\"%s\"," +
                         "\"state\":%d, \"date\":\"%s\", \"attachment\":%s, \"from\":\"%s\"," +
-                        "\"review\":%s,\"tag\":%s,\"belong_user_id\":%d,\"readers\":%s}",
-                id, subject, content, state, format.format(date), attachment, from, tmp_review, tmp_tag, belong_user_id, formatReaders());
+                        "\"review\":%s,\"tag\":%s,\"belong\":%s,\"readers\":%s}",
+                id, subject, content, state, format.format(date), attachment, from, tmp_review, tmp_tag, formatHandler(), formatReaders());
         return str;
     }
 
@@ -185,8 +187,18 @@ public class Inbox implements Serializable {
         }
         str = String.format("{\"id\":%d, \"subject\":\"%s\", " +
                         "\"state\":%d, \"date\":\"%s\", \"attachment\":%s, \"from\":\"%s\"," +
-                        "\"review\":%s,\"tag\":%s,\"belong_user_id\":%d}",
-                id, subject, state, format.format(date), attachment, from, tmp_review, tmp_tag, belong_user_id);
+                        "\"review\":%s,\"tag\":%s,\"belong\":%s}",
+                id, subject, state, format.format(date), attachment, from, tmp_review, tmp_tag, formatHandler());
+        return str;
+    }
+
+    private String formatHandler() {
+        String str;
+        if (handler == null)
+            str = "null";
+        else {
+            str = String.format("{\"id\":%d,\"name\":\"%s\"}", handler.getId(), handler.getName());
+        }
         return str;
     }
 
