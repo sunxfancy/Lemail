@@ -55,9 +55,8 @@ public class Auth {
     public String signup() {
         User u = new User(username, password, name, role, department_id);
         if (default_checker != null) {
-            u.setDefaultChecker(default_checker);
+            u.setChecker((User) DBSession.find_first(User.class, Restrictions.eq("id", default_checker)));
         }
-
         Session s = DBSession.getSession();
         try {
             s.beginTransaction();
@@ -91,4 +90,38 @@ public class Auth {
         return null;
     }
 
+    public String new_password;
+    public String old_password;
+
+    public String change() {
+        Integer uid = (Integer) Action.getSession("uid");
+        if (uid == null) return Action.error(401, "用户未登录");
+        User u = (User) DBSession.find_first(User.class, Restrictions.eq("id", uid));
+        Boolean changed = false;
+        if (name != null) {
+            u.setName(name);
+            changed = true;
+        }
+        if (new_password != null) {
+            if (u.check_passwd(old_password)) {
+                u.setPassword(new_password);
+                changed = true;
+            } else
+                return Action.error(403, "原密码不匹配");
+        }
+        if (changed) {
+            Session s = DBSession.getSession();
+            try {
+                s.beginTransaction();
+                s.update(u);
+                s.getTransaction().commit();
+            } catch (Exception ex) {
+                return Action.error(-1, "未知错误");
+            } finally {
+                s.close();
+            }
+        }
+        Action.echojson(0, "success");
+        return null;
+    }
 }
