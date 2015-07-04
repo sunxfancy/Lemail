@@ -32,19 +32,23 @@ LeMailModule.controller('LeMailController',['$scope', '$http', '$location', '$te
     $scope.sidebarItems = {
         dispatcher: {
             title: '分发',
-            item: ['所有邮件']
+            item: ['所有邮件'],
+            url: ['']
         },
         reviewer: {
             title: '审核',
-            item: ['审核列表']
+            item: ['审核列表'],
+            url: ['']
         },
         handler: {
             title: '处理',
-            item: ['已处理','未处理']
+            item: ['已处理','未处理'],
+            url: ['', '']
         },
         manager: {
             title: '管理',
-            item: ['设置']
+            item: ['设置'],
+            url: ['']
         }
     };
 
