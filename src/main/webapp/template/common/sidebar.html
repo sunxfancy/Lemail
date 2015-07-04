@@ -1,4 +1,9 @@
 <link rel="stylesheet" href="/css/sidebar.css"/>
 <div class="sidebar-div">
+    <fieldset>
+    <ul ng-repeat="(key, value) in user.roles" ng-if="value == 1" class="clearfix">
 
+        <li ng-repeat="item in sidebarItems[key]['item']">{{item}}</li>
+    </ul>
+    </fieldset>
 </div>

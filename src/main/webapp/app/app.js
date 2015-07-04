@@ -13,7 +13,7 @@ LeMailModule.config(['$routeProvider', function($routeProvider){
     });
 }]);
 
-LeMailModule.controller('LeMailController',['$scope', '$http', '$location', function($scope, $http, $location){
+LeMailModule.controller('LeMailController',['$scope', '$http', '$location', '$templateCache', function($scope, $http, $location, $templateCache){
     $scope.title = "登陆";
 
     $scope.user = {
@@ -27,6 +27,25 @@ LeMailModule.controller('LeMailController',['$scope', '$http', '$location', func
             manager: 0
         },
         checker: null
+    };
+
+    $scope.sidebarItems = {
+        dispatcher: {
+            title: '分发',
+            item: ['所有邮件']
+        },
+        reviewer: {
+            title: '审核',
+            item: ['审核列表']
+        },
+        handler: {
+            title: '处理',
+            item: ['已处理','未处理']
+        },
+        manager: {
+            title: '管理',
+            item: ['设置']
+        }
     };
 
     $scope.$on('login', function(event,data){

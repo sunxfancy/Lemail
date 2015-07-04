@@ -6,3 +6,17 @@
     background-color: #aaaaaa;
     width: 200px;
 }
+
+.sidebar-div ul{
+    margin: 0 0 10px 0;
+    background-color: red;
+    list-style: none;
+}
+
+
+.sidebar-div li{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: large;
+}
