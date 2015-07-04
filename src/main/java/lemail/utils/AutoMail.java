@@ -17,10 +17,10 @@ public class AutoMail {
     private static AutoMail autoMail = new AutoMail();
 
     // 需要保障这三个字段中都不存在回车
-    private String username;
-    private String password;
-    private String hostname;
-    private String hostname_send;
+    private String username = "";
+    private String password = "";
+    private String hostname = "";
+    private String hostname_send = "";
     // 路径配置项
     private final String path="save.prop";
     private final String attachment_path = "./attachment/";

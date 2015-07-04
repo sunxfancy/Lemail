@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 消息类
+ * 消息类, 消息的状态有两种，0-未读， 1-已读
  * Created by sxf on 15-6-28.
  */
 @Entity
