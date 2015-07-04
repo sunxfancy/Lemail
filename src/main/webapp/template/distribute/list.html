@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="/css/distribute/list.css"/>
-<div class="dis-main" >
+<div class="dis-main" ng-controller="distributListController" ng-init="onPageLoad()" >
     <!--统计栏-->
     <div class="row">
-        <h3>共 37 封邮件</h3>
+        <h3>共 {{sum_mail}} 封邮件</h3>
         <div class="pull-right dis-list-new-btn">
             <button class="btn btn-primary">写信</button>
         </div>
@@ -12,15 +12,9 @@
     <div class="row">
         <h4>通知</h4>
         <table class="table table-hover list-table">
-            <tr>
-                <td>李乐乐退回了您分发的邮件</td>
-                <td>这份邮件也不归我管,你丫的没事给我瞎发啥?(⊙o⊙)？</td>
-                <td class="text-right">
-                    <button class="btn-primary">查看</button></td>
-            </tr>
-            <tr>
-                <td>马连韬将您分发的邮件转交给了孙笑凡</td>
-                <td>抱歉,今天我不想处理</td>
+            <tr ng-repeat="msg in messages">
+                <td>{{ msg.label }}</td>
+                <td>{{ msg.content }}</td>
                 <td class="text-right">
                     <button class="btn-primary">查看</button></td>
             </tr>
@@ -31,19 +25,12 @@
     <div class="row">
         <h4>邮件</h4>
         <table class="table table-hover list-table">
-            <tr class="list-table-unread">
-                <td>童俞斌(19231824@qq.com)</td>
-                <td>腰好腿好身体好,吃嘛嘛香</td>
-                <td>2015年 7月4日</td>
-                <td>李梦琪</td>
-                <td class="text-right">
-                    <button class="btn-primary">通知</button></td>
-            </tr>
-            <tr>
-                <td>童俞斌(19231824@qq.com)</td>
-                <td>Monkey你快出来一下,我了个去,这破烂表格肿么就是对不齐</td>
-                <td>2015年 7月5日</td>
-                <td>李梦琪</td>
+            <tr ng-repeat="mail in mail_list"
+                ng-class="{'list-table-unread':mail.state==0}" >
+                <td>{{ mail.from }}</td>
+                <td>{{ mail.subject }}</td>
+                <td>{{ mail.date }}</td>
+                <td>{{ mail.belong_user_id }}</td>
                 <td class="text-right">
                     <button class="btn-primary">通知</button></td>
             </tr>

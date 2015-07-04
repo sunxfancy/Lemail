@@ -85,10 +85,10 @@ public class Manager {
 
             Action.echojson(0,"success",
                     String.format(
-                            "{username:\"%s\"," +
-                                    "password:\"%s\"," +
-                                    "hostname:\"%s\"," +
-                                    "hostname_send:\"%s\"}",
+                            "{\"username\":\"%s\"," +
+                             "\"password\":\"%s\"," +
+                             "\"hostname\":\"%s\"," +
+                             "\"hostname_send\":\"%s\"}",
                             username, password, hostname, hostname_send));
 
             return null;
