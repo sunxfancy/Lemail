@@ -64,6 +64,11 @@ public class Action {
         return null;
     }
 
+    public static String success() {
+        echojson(0, "success", null);
+        return null;
+    }
+
     public static String error(int status, String message) {
         echojson(status, message, null);
         return null;
