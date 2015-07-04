@@ -41,4 +41,8 @@ public class Department implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String toJson() {
+        return String.format("{\"id\":%d, \"name\":\"%s\"}", id, name);
+    }
 }

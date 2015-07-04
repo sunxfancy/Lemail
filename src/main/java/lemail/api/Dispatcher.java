@@ -22,7 +22,7 @@ public class Dispatcher {
                 sb.append("[");
                 System.out.write(inboxMails.size());
                 for (Inbox itememail : inboxMails) {
-                    sb.append(itememail.toJson());
+                    sb.append(itememail.toJsonNoData());
                     sb.append(',');
                 }
                 if (sb.length() > 1) {

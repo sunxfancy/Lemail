@@ -21,6 +21,9 @@ public class Auth {
     public String role;
     public Integer default_checker;
 
+    /**
+     * 登录方法
+     */
     public String login() {
         User u = (User) DBSession.find_first(User.class,
                 Restrictions.eq("username", username));
@@ -36,15 +39,20 @@ public class Auth {
         return Action.error(1001, "密码错误");
     }
 
+    /**
+     * 登出
+     */
     public String logout() {
         Action.setSession("uid", null);
         Action.setSession("role", null);
-        Action.echojson(0, "success", null);
+        Action.echojson(0, "success");
         return null;
     }
 
+    /**
+     * 注册新用户
+     */
     public String signup() {
-        System.out.println("xxxx");
         User u = new User(username, password, name, role, department_id);
         if (default_checker != null) {
             u.setDefaultChecker(default_checker);
@@ -68,6 +76,18 @@ public class Auth {
         } finally {
             s.close();
         }
+        return null;
+    }
+
+    /**
+     * 获取当前登录用户的详细信息
+     */
+    public String getUser() {
+        Integer uid = (Integer) Action.getSession("uid");
+        if (uid == null) return Action.error(401, "用户未登录");
+        User u = (User) DBSession.find_first(User.class,
+                Restrictions.eq("id", uid));
+        Action.echojson(0, "success", u.toJson());
         return null;
     }
 

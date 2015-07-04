@@ -12,9 +12,19 @@ import java.util.Objects;
  * Created by sxf on 15-6-28.
  */
 public class Action {
+
     /**
-     * @param status
-     * @param message
+     * 格式化后json数据字符串为标准格式
+     * @param status  状态码
+     * @param message 信息内容
+     */
+    public static void echojson(int status, String message) {
+        echojson(status, message, null);
+    }
+
+    /**
+     * @param status  状态码
+     * @param message 信息内容
      * @param data    格式化后数据段json字符串，若没有设置为null
      */
     public static void echojson(int status, String message, String data) {
@@ -51,6 +61,11 @@ public class Action {
      */
     public static String text(String str) {
         println(str);
+        return null;
+    }
+
+    public static String success() {
+        echojson(0, "success", null);
         return null;
     }
 

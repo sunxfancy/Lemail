@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -151,6 +150,10 @@ public class User implements Serializable {
                 roles[0], roles[1], roles[2], roles[3],
                 checker);
         return str;
+    }
+
+    public boolean checkRole(String name) {
+        return role.contains(name);
     }
 
     private int[] parseRole() {
