@@ -144,7 +144,7 @@ public class User implements Serializable {
             checker = default_checker.toString();
         }
         str = String.format("{\"id\":%d, \"username\":\"%s\", \"name\":\"%s\"," +
-                        "\"manager\":%d, \"dispatcher\":%d, \"handler\":%d, \"reviewer\":%d," +
+                        "\"roles\":{\"manager\":%d, \"dispatcher\":%d, \"handler\":%d, \"reviewer\":%d}," +
                         "\"checker\":%s}",
                 id, username, name,
                 roles[0], roles[1], roles[2], roles[3],

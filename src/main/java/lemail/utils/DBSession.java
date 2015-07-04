@@ -1,6 +1,7 @@
 package lemail.utils;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -63,6 +64,64 @@ public class DBSession {
         return first(dc);
     }
 
+    public static List executeSql(String sql, int offset, int max, Condition... conditions) {
+        Session s = getSession();
+        StringBuilder sb = new StringBuilder(sql);
+        if (conditions.length > 0) {
+            sb.append(" where ");
+            for (int i = 0; i < conditions.length; i++) {
+                sb.append(conditions[i].getCondition());
+                sb.append(" ");
+                if (i != conditions.length - 1) {
+                    sb.append("and ");
+                }
+            }
+        }
+        try {
+            s.beginTransaction();
+            Query q = s.createQuery(sb.toString()).setFirstResult(offset).setMaxResults(max);
+            if (conditions.length > 0) {
+                for (int i = 0; i < conditions.length; i++) {
+                    q.setParameter(i, conditions[i].getValue());
+                }
+            }
+            List l = q.list();
+            s.getTransaction().commit();
+            return l;
+        } finally {
+            s.close();
+        }
+    }
+
+    public static int count(String name, Condition... conditions) {
+        Session s = getSession();
+        int result;
+        StringBuilder sql = new StringBuilder(String.format("select count(*) from %s", name));
+        if (conditions.length > 0) {
+            sql.append(" where ");
+            for (int i = 0; i < conditions.length; i++) {
+                sql.append(conditions[i].getCondition());
+                sql.append(" ");
+                if (i != conditions.length - 1) {
+                    sql.append("and ");
+                }
+            }
+        }
+        try {
+            s.beginTransaction();
+            Query q = s.createQuery(sql.toString());
+            if (conditions.length > 0) {
+                for (int i = 0; i < conditions.length; i++) {
+                    q.setParameter(i, conditions[i].getValue());
+                }
+            }
+            result = ((Number) q.uniqueResult()).intValue();
+            s.getTransaction().commit();
+            return result;
+        } finally {
+            s.close();
+        }
+    }
 
     private static void init() {
         Configuration config = new Configuration().configure();
