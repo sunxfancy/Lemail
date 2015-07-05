@@ -23,6 +23,9 @@
         <action name="setconf" class="lemail.api.Manager" method="setConf"/>
         <action name="getconf" class="lemail.api.Manager" method="getConf"/>
     </package>
+    <package name="handler" extends="struts-default" namespace="/api/handler">
+        <action name="getall" class="lemail.api.Handler" method="getAll"/>
+    </package>
     <package name="test" extends="struts-default">
         <action name="test" class="lemail.api.Test" method="test"/>
     </package>
