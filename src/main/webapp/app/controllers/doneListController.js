@@ -2,7 +2,8 @@
  * Created by sxf on 15-7-5.
  */
 
-LeMailModule.controller('todoListController', ['$scope','$http','$location',function($scope, $http, $location){
+LeMailModule.controller('doneListController',
+    ['$scope','$http','$location',function($scope, $http, $location){
     $scope.sum_mail = 0;
     $scope.messages = [
         {
@@ -29,7 +30,7 @@ LeMailModule.controller('todoListController', ['$scope','$http','$location',func
     $scope.mail_list = [];
     $scope.onPageLoad = function () {
         $http({
-            url: '/api/handler/nothandle',
+            url: '/api/handler/handled',
             method: 'GET',
             params: { page : 0 }
         }).success(function(response, status, headers, config){
