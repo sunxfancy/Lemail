@@ -5,11 +5,13 @@ package lemail.utils;
  */
 public class Condition {
     private String condition;
+    private String name;
     private Object value;
 
-    public Condition(String condition, Object value) {
+    public Condition(String name, String condition, Object value) {
         this.condition = condition;
         this.value = value;
+        this.name = name;
     }
 
     public String getCondition() {
@@ -26,5 +28,13 @@ public class Condition {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -4,12 +4,15 @@ import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 import lemail.model.Inbox;
 import lemail.model.User;
 import lemail.utils.Action;
+import lemail.utils.Condition;
 import lemail.utils.DBSession;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,25 +26,7 @@ public class Dispatcher {
             check();
             if (page == null)
                 page = 0;
-            List<Inbox> inboxMails = DBSession.executeSql("from Inbox order by date desc", 10 * page, 10);
-            int count = DBSession.count("Inbox");
-            StringBuilder sb = new StringBuilder();
-            sb.append("{\"list\":[");
-            for (Inbox itememail : inboxMails) {
-                sb.append(itememail.toJsonNoData());
-                sb.append(',');
-            }
-            if (sb.length() > 9) {
-                sb.setCharAt(sb.length() - 1, ']');
-                sb.append(",");
-            } else {
-                sb.append("],");
-            }
-            sb.append("\"page\":");
-            sb.append(page + 1);
-            sb.append(String.format(",\"sum\":%d", count % 10 == 0 ? count % 10 + 1 : count % 10));
-            sb.append("}");
-            Action.echojson(0, "success", sb.toString());
+            Action.echojson(0, "success", getList("from Inbox", page * 10, 10, "order by date desc"));
         } catch (ApiException ex) {
             return Action.error(ex.getId(), ex.getMessage());
         } catch (Exception ex) {
@@ -122,8 +107,53 @@ public class Dispatcher {
     }
 
     public String getHandlers() {
-
+        Session s = DBSession.getSession();
+        try {
+            check();
+            List<User> us = DBSession.find_list(User.class, Restrictions.like("role", "%H%"));
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for (User handler : us) {
+                sb.append(handler.toSimpleJson());
+                sb.append(',');
+            }
+            if (sb.length() > 1) {
+                sb.setCharAt(sb.length() - 1, ']');
+            } else {
+                sb.append("]");
+            }
+            Action.echojson(0, "success", sb.toString());
+        } catch (ApiException ex) {
+            return Action.error(ex.getId(), ex.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Action.error(-1, "未知异常");
+        } finally {
+            s.close();
+        }
         return null;
+    }
+
+    private String getList(String sql, int offset, int max, String order, Condition... conditions) {
+        List<Inbox> inboxMails = DBSession.executeSql(sql, offset, max, order, conditions);
+        int count = DBSession.count("Inbox", conditions);
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"list\":[");
+        for (Inbox itememail : inboxMails) {
+            sb.append(itememail.toJsonNoData());
+            sb.append(',');
+        }
+        if (sb.length() > 9) {
+            sb.setCharAt(sb.length() - 1, ']');
+            sb.append(",");
+        } else {
+            sb.append("],");
+        }
+        sb.append("\"page\":");
+        sb.append(page + 1);
+        sb.append(String.format(",\"sum\":%d", count % 10 == 0 ? count % 10 + 1 : count % 10));
+        sb.append("}");
+        return sb.toString();
     }
 
     private void check() throws ApiException {
