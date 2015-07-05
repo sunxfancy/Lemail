@@ -121,6 +121,10 @@ public class Dispatcher {
         return null;
     }
 
+    public String getHandlers() {
+        return null;
+    }
+
     private void check() throws ApiException {
         Integer uid = (Integer) Action.getSession("uid");
         String role = (String) Action.getSession("role");
