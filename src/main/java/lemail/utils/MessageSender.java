@@ -2,6 +2,7 @@ package lemail.utils;
 
 
 import lemail.model.Message;
+import lemail.model.User;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Date;
@@ -15,12 +16,12 @@ public class MessageSender {
 
     /**
      * 发送消息
-     * @param from_id 当前登录的用户id
+     * @param from 当前登录的用户对象
      * @param to_id   发送目标的id
      * @param content 消息的内容
      */
-    public void SendMessage(Integer from_id, Integer to_id, String content) {
-        Message m = new Message(from_id, to_id, new Date(), content);
+    public void SendMessage(User from, Integer to_id, String content) {
+        Message m = new Message(from, to_id, new Date(), content);
         DBSession.getSession().save(m);
     }
 
