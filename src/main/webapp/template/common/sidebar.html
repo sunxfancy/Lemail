@@ -4,6 +4,8 @@
         <div class="division-div">
             <span ng-bind="sidebarItems[key]['title']"></span>
         </div>
-        <li ng-repeat="item in sidebarItems[key]['item']">{{item}}</li>
+        <li ng-repeat="item in sidebarItems[key]['item']">
+            <a ng-click="changeMainContent(sidebarItems[key]['url'][$index])">{{item}}</a>
+        </li>
     </ul>
 </div>

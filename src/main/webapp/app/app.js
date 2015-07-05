@@ -95,7 +95,6 @@ LeMailModule.controller('LeMailController',['$scope', '$http', '$location', '$te
                 }
                 $scope.default_role_url = $scope.sidebarItems[firstRole]['url'][0];
                 $scope.$broadcast('changeMainContent', $scope.default_role_url);
-                $templateCache.removeAll();
             }else if(response.status == 401){
                 $location.path("/login");
                 $scope.title = "登陆";

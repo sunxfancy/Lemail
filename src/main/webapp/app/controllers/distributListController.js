@@ -37,12 +37,21 @@ LeMailModule.controller('distributListController', ['$scope','$http',function($s
         }).success(function(response, status, headers, config){
             console.log(response);
             if (response.status == 0){
-                $scope.mail_list = response.data;
+                //$scope.mail_list = response.data;
             }else{
                 alert(response.message);
             }
         }).error(function(response, status, headers, config){
             console.log(response);
         });
+    };
+
+    $scope.distribute = function(){
+        $scope.$emit('changeMainContent', '/template/distribute/distribute.html');
+    }
+
+    $scope.inform = function($event){
+        alert("大圣，快去实现distributeController的inform方法");
+        $event.stopPropagation();
     }
 }]);

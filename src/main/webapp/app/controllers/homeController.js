@@ -10,8 +10,9 @@ LeMailModule.controller('homeController', ['$scope', function($scope){
     });
 
     $scope.onload = function(url){
-        //alert($scope.$parent.user.default_role_url);
-        //$scope.content_url = $scope.$parent.user.default_role_url;
+        // 更新界面
+        console.log(url);
+        $scope.changeMainContent(url);
     };
 
     $scope.changeMainContent = function(url){
