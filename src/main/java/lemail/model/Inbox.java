@@ -153,6 +153,7 @@ public class Inbox implements Serializable {
         String tmp_tag;
         SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
         String tmp_review = "null";
+        String tmp_attach = "null";
         if (review != null && review) {
             tmp_review = "true";
         } else if (review != null && !review) {
@@ -163,10 +164,13 @@ public class Inbox implements Serializable {
         } else {
             tmp_tag = "\"" + tag + "\"";
         }
+        if (attachment != null) {
+            tmp_attach = "\"" + attachment + "\"";
+        }
         str = String.format("{\"id\":%d, \"subject\":\"%s\", \"content\":\"%s\"," +
                         "\"state\":%d, \"date\":\"%s\", \"attachment\":%s, \"from\":\"%s\"," +
                         "\"review\":%s,\"tag\":%s,\"belong\":%s,\"readers\":%s}",
-                id, subject, content, state, format.format(date), attachment, from, tmp_review, tmp_tag, formatHandler(), formatReaders());
+                id, subject, content, state, format.format(date), tmp_attach, from, tmp_review, tmp_tag, formatHandler(), formatReaders());
         return str;
     }
 
@@ -186,9 +190,9 @@ public class Inbox implements Serializable {
             tmp_tag = "\"" + tag + "\"";
         }
         str = String.format("{\"id\":%d, \"subject\":\"%s\", " +
-                        "\"state\":%d, \"date\":\"%s\", \"attachment\":%s, \"from\":\"%s\"," +
+                        "\"state\":%d, \"date\":\"%s\", \"from\":\"%s\"," +
                         "\"review\":%s,\"tag\":%s,\"belong\":%s}",
-                id, subject, state, format.format(date), attachment, from, tmp_review, tmp_tag, formatHandler());
+                id, subject, state, format.format(date), from, tmp_review, tmp_tag, formatHandler());
         return str;
     }
 
