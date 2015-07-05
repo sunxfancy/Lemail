@@ -4,7 +4,7 @@
 LeMailModule.controller('homeController', ['$scope',function($scope){
     $scope.content_url = "/template/distribute/list.html";
 
-    $scope.$on()
+    //$scope.$on()
 
     $scope.changeMainContent = function(url){
         $scope.content_url = url;
