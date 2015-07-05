@@ -22,8 +22,10 @@ LeMailModule.config(['$routeProvider', "$httpProvider",  function($routeProvider
         templateUrl: '/template/dispatcher.html'
     }).when('/reviewer',{
         templateUrl: '/template/reviewer.html'
-    }).when('/handler',{
-        templateUrl: '/template/handler.html'
+    }).when('/handler/todo',{
+        templateUrl: '/template/handler/todo.html'
+    }).when('/handler/done',{
+        templateUrl: '/template/handler/done.html'
     }).when('/manager',{
         templateUrl: '/template/manager.html'
     }).when('/dispatcher/distribute',{
@@ -34,7 +36,9 @@ LeMailModule.config(['$routeProvider', "$httpProvider",  function($routeProvider
 }]);
 
 
-LeMailModule.controller('LeMailController',['$scope', '$http', '$location', '$templateCache', function($scope, $http, $location, $templateCache){
+LeMailModule.controller('LeMailController',
+    ['$scope', '$http', '$location', '$templateCache',
+        function($scope, $http, $location, $templateCache){
     $scope.title = "登陆";
 
     $scope.user = {
@@ -65,8 +69,8 @@ LeMailModule.controller('LeMailController',['$scope', '$http', '$location', '$te
         },
         handler: {
             title: '处理',
-            item: ['已处理','未处理'],
-            url: ['/#/handler', '/#']
+            item: ['未处理','已处理'],
+            url: ['/#/handler/todo', '/#/handler/done']
         },
         manager: {
             title: '管理',

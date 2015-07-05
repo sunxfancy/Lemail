@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="/css/home.css"/>
+<link rel="stylesheet" href="/css/distribute/list.css"/>
+<div class="container-fluid" >
+    <div ng-include="'/template/common/navbar.html'"></div>
+    <div ng-include="'/template/common/sidebar.html'"></div>
+
+    <div class="content-div" ng-controller="todoListController" ng-init="onPageLoad()">
+        <!--统计栏-->
+        <div class="row">
+            <h3>共 {{sum_mail}} 封邮件</h3>
+            <div class="pull-right dis-list-new-btn">
+                <button class="btn btn-primary">写信</button>
+            </div>
+        </div>
+
+        <!--通知栏-->
+        <div class="row">
+            <h4>通知</h4>
+            <table class="table table-hover list-table">
+                <tr ng-repeat="msg in messages">
+                    <td>{{ msg.label }}</td>
+                    <td>{{ msg.content }}</td>
+                    <td class="text-right">
+                        <button class="btn-primary">查看</button></td>
+                </tr>
+            </table>
+        </div>
+
+        <!--邮件列表-->
+        <div class="row">
+            <h4>邮件</h4>
+            <table class="table table-hover list-table">
+                <tr ng-repeat="mail in mail_list"
+                    ng-class="{'list-table-unread':mail.state==0}" ng-click="distribute()">
+                    <td>{{ mail.from }}</td>
+                    <td>{{ mail.subject }}</td>
+                    <td>{{ mail.date }}</td>
+                    <td>{{ mail.belong_user_id }}</td>
+                    <td class="text-right">
+                        <button class="btn-primary" ng-click="inform($event)">通知</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

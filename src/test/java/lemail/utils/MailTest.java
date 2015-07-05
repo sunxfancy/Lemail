@@ -5,13 +5,14 @@ import junit.framework.TestCase;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Message;
-import javax.mail.Multipart;
 
 public class MailTest extends TestCase {
 
     public void testPostMail() throws Exception {
         Mail mail = new Mail("lemailtest@sina.com", "1234qwer", "smtp.sina.com", "imap.sina.com");
-        mail.PostMail("测试一下", "测试邮件啊。。。。", "lemailtest@sina.com");
+//        for (int i = 0; i< 10; ++i) {
+            mail.PostMail("测试一下", "测试邮件啊。。。。", "lemailtest@sina.com");
+//        }
     }
 
     public void testGetBox() throws Exception {
