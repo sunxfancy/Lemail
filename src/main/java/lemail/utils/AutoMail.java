@@ -1,11 +1,12 @@
 package lemail.utils;
 
 import lemail.model.Inbox;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 
 import javax.mail.*;
 import javax.mail.internet.MimeUtility;
 import java.io.*;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -16,6 +17,8 @@ public class AutoMail {
 
     private Mail mail = null;
     private static AutoMail autoMail = new AutoMail();
+
+    private Date last = new Date();
 
     // 需要保障这三个字段中都不存在回车
     private String username = "";
@@ -50,32 +53,34 @@ public class AutoMail {
      * @throws Exception 无法获得邮件的信息
      */
     public void Update() throws Exception {
+        Date now = new Date();
+        if (now.getTime() - last.getTime() < 60 * 1000 ) return;
+        last = now;
+
+        mail = new Mail(username, password, hostname, hostname_send);
         Message[] msgs = mail.getBox("INBOX");
         for (Message msg : msgs) {
             try {
-                String content = msg.getContent().toString();
+                String content;
                 StringBuilder sb = null;
-//                if (msg.getContentType().contains("multipart")) {
-//                    sb = new StringBuilder();
-//                    content = multipart(msg, sb);
-//                } else {
-//                    content =
-//                }
-                System.out.println(msg.getSubject());
-                System.out.println(content);
-                System.out.println(msg.getSentDate());
-                System.out.println(msg.getFrom()[0].toString());
+                if (msg.getContentType().contains("multipart")) {
+                    sb = new StringBuilder();
+                    content = multipart(msg, sb);
+                } else {
+                    content = msg.getContent().toString();
+                }
                 Inbox in_msg = new Inbox(
                     msg.getSubject(),
-                    msg.getContent().toString(),
-                    msg.getSentDate(),
+                    content,
+                    new Date(),
                     msg.getFrom()[0].toString()
                 );
                 if (sb != null)
                     in_msg.setAttachment(sb.toString());
-                Transaction t = DBSession.getSession().getTransaction();
+                org.hibernate.Session s = DBSession.getSession();
+                Transaction t = s.getTransaction();
                 t.begin();
-                DBSession.getSession().save(in_msg);
+                s.save(in_msg);
                 t.commit();
                 msg.getFlags().add(Flags.Flag.SEEN);
             }catch(Exception e){
@@ -92,9 +97,10 @@ public class AutoMail {
             BodyPart part = multipart.getBodyPart(i);
             // 单个部件类型
             String type = part.getContentType().split(";")[0];
-            if (type.equals("multipart/alternative")
-                    || type.contains("text")
-                    || type.equals("multipart/related")) {
+            System.out.println(type);
+            type = type.toLowerCase();
+            if (type.contains("multipart")
+                    || type.contains("text")) {
                 content = part.getContent().toString();
             } else {
                 // 文件名解码

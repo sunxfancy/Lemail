@@ -5,9 +5,9 @@
     </button>
     <div class="mail-box">
         <div class="row">
-            <div class="col-sm-10 title">与贵公司的境经济来往明细</div>
-            <div class="col-sm-2 time">2015-06-05</div>
-            <div class="col-sm-12 email">vvliebe@gmail.com</div>
+            <div class="col-sm-10 title">{{mail.subject}}</div>
+            <div class="col-sm-2 time">{{mail.date}}</div>
+            <div class="col-sm-12 email">{{mail.from}}</div>
             <div class="division-line col-sm-12"></div>
         </div>
 
@@ -26,13 +26,13 @@
 
         <div class="row">
             <div class="receiver-address-div col-sm-12">
-                <label>12334</label>
+                <label>{{mail.tag}}</label>
             </div>
             <div class="division-line col-sm-12"></div>
         </div>
 
         <div class="row">
-            <div class="receiver-address-div col-sm-12">adfadsfasdfadsfadsf</div>
+            <div class="receiver-address-div col-sm-12">{{mail.content}}</div>
             <div class="division-line col-sm-12"></div>
         </div>
 

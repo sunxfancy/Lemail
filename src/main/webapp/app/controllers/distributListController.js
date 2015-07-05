@@ -83,15 +83,17 @@ LeMailModule.controller('distributListController', ['$scope','$http',function($s
             belong_user_id : 0
         }
     ];
+    $scope.mail_list = [];
     $scope.onPageLoad = function () {
         $http({
             url: '/api/dispatcher/getall',
             method: 'GET',
-            params: { page : 1 }
+            params: { page : 0 }
         }).success(function(response, status, headers, config){
             console.log(response);
             if (response.status == 0){
-                //$scope.mail_list = response.data;
+                $scope.mail_list = response.data.list;
+                $scope.sum_mail = $scope.mail_list.length;
             }else{
                 alert(response.message);
             }
