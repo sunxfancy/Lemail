@@ -17,10 +17,23 @@
         </div>
 
         <div class="row">
-            <div class="receiver-address-div col-sm-4">处理人员</div>
+            <div class="receiver-address-div col-sm-4">
+                处理人员
+                <select>
+                    <option ng-repeat="user in users" value="{{user.id}}">{{user.name}}</option>
+                </select>
+                <label>侠客</label>
+            </div>
             <div class="receiver-address-div col-sm-6">设定时限</div>
             <div class="receiver-address-div col-sm-2"><button>确定</button></div>
-            <div class="receiver-address-div col-sm-12">查阅人员</div>
+            <div class="receiver-address-div col-sm-12">
+                查阅人员
+
+                <select>
+                    <option ng-repeat="user in users" value="{{user.id}}">{{user.name}}</option>
+                </select>
+                <label>侠客</label>
+            </div>
             <div class="division-line col-sm-12"></div>
         </div>
 
