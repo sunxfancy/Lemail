@@ -9,11 +9,11 @@ LeMailModule.config(['$routeProvider', "$httpProvider",  function($routeProvider
     if (!$httpProvider.defaults.headers.get) {
         $httpProvider.defaults.headers.get = {};
     }
-    // Enables Request.IsAjaxRequest() in ASP.NET MVC
-    //$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-    //// Disable IE ajax request caching
-    //$httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
-    //$httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+     //Enables Request.IsAjaxRequest() in ASP.NET MVC
+    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+    // Disable IE ajax request caching
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
     $routeProvider.when('/login',{
         templateUrl: '/template/login.html'
     }).when('/home',{

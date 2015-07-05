@@ -19,11 +19,18 @@ LeMailModule.controller('distributeListController',  ['$scope','$http',function(
         readers : []
     };
 
+    $scope.selectedHandler = null;
+
     $scope.handler = null;
     $scope.users = [
         {id: 1, name:"侠客"},
         {id: 2, name:"熊"}
     ];
+
+    $scope.selectHandler = function(user){
+        console.log(user);
+        $scope.selectedHandler = user;
+    };
 
 
     $scope.onPageLoad = function(){
