@@ -29,11 +29,13 @@ LeMailModule.controller('LeMailController',['$scope', '$http', '$location', '$te
         checker: null
     };
 
+    $scope.default_role_url = "";
+
     $scope.sidebarItems = {
         dispatcher: {
             title: '分发',
             item: ['所有邮件'],
-            url: ['']
+            url: ['/template/distribute/list.html']
         },
         reviewer: {
             title: '审核',
@@ -81,7 +83,18 @@ LeMailModule.controller('LeMailController',['$scope', '$http', '$location', '$te
             if (response.status == 0){
                 $scope.user = response.data;
                 $scope.title = "欢迎使用Lemail";
-
+                var firstRole = "";
+                if ($scope.user.roles["dispatcher"] == 1){
+                    firstRole = "dispatcher";
+                } else if ($scope.user.roles["handler"] == 1){
+                    firstRole = "handler";
+                } else if ($scope.user.roles["reviewer"] == 1){
+                    firstRole = "reviewer";
+                } else if ($scope.user.roles["manager"] == 1){
+                    firstRole = "manager";
+                }
+                $scope.default_role_url = $scope.sidebarItems[firstRole]['url'][0];
+                $scope.$broadcast('changeMainContent', $scope.default_role_url);
                 $templateCache.removeAll();
             }else if(response.status == 401){
                 $location.path("/login");
