@@ -197,7 +197,7 @@ public class Inbox implements Serializable {
         if (handler == null)
             str = "null";
         else {
-            str = String.format("{\"id\":%d,\"name\":\"%s\"}", handler.getId(), handler.getName());
+            str = handler.toSimpleJson();
         }
         return str;
     }
@@ -206,12 +206,7 @@ public class Inbox implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         for (User reader : readers) {
-            sb.append("{\"id\":");
-            sb.append(reader.getId());
-            sb.append(",");
-            sb.append("\"name\":\"");
-            sb.append(reader.getName());
-            sb.append("\"}");
+            sb.append(reader.toSimpleJson());
             sb.append(',');
         }
         if (sb.length() > 1) {

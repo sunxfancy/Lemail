@@ -148,6 +148,11 @@ public class User implements Serializable {
         return str;
     }
 
+
+    public String toSimpleJson() {
+        return String.format("{\"id\":%d,\"name\":\"%s\"}", id, name);
+    }
+
     public boolean checkRole(String name) {
         return role.contains(name);
     }
@@ -177,7 +182,7 @@ public class User implements Serializable {
         if (checker == null)
             str = "null";
         else {
-            str = String.format("{\"id\":%d,\"name\":\"%s\"}", checker.getId(), checker.getName());
+            str = checker.toSimpleJson();
         }
         return str;
     }
