@@ -2,8 +2,7 @@
  * Created by vvliebe on 6/29/15.
  */
 
-var LeMailModule = angular.module('LeMailModule', ['ngRoute','ngSanitize', 'ui.select']);
-
+var LeMailModule = angular.module('LeMailModule', ['ngRoute','ngSanitize', 'ui.select', 'textAngular']);
 
 LeMailModule.config(['$routeProvider', "$httpProvider",  function($routeProvider, $httpProvider){
     if (!$httpProvider.defaults.headers.get) {
@@ -26,6 +25,8 @@ LeMailModule.config(['$routeProvider', "$httpProvider",  function($routeProvider
         templateUrl: '/template/handler/todo.html'
     }).when('/handler/done',{
         templateUrl: '/template/handler/done.html'
+    }).when('/handler/new',{
+        templateUrl: '/template/handler/new.html'
     }).when('/manager',{
         templateUrl: '/template/manager.html'
     }).when('/dispatcher/distribute',{
@@ -69,8 +70,8 @@ LeMailModule.controller('LeMailController',
         },
         handler: {
             title: '处理',
-            item: ['未处理','已处理'],
-            url: ['/#/handler/todo', '/#/handler/done']
+            item: ['未处理','已处理','写新邮件'],
+            url: ['/#/handler/todo', '/#/handler/done', '/#/handler/new']
         },
         manager: {
             title: '管理',
