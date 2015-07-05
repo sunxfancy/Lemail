@@ -1,7 +1,18 @@
 .back-btn{
-    position: relative;
+    position: absolute;
     top: 30px;
     left: 30px;
+    outline: none;
+    border: none;
+}
+
+.back-btn > span{
+    width: 100%;
+    height: 100%;
+}
+
+.back-btn:hover{
+
 }
 
 .mail-box {
@@ -13,6 +24,23 @@
     background-color: #269abc;
 }
 
-.receiver-address-div{
+.mail-box>div{
+    padding: 5px 20px;
+}
 
+.mail-box .title{
+    font-size: large;
+}
+
+.mail-box .time{
+    font-size: small;
+}
+
+.mail-box .email{
+    font-size: small;
+}
+
+.mail-box .division-line{
+    height: 1px;
+    background-color: #4C4C4C;
 }

@@ -1,30 +1,40 @@
 <link rel="stylesheet" href="/css/distribute/add.css"/>
-<div class="dis-main" ng-controller="distributeListController" ng-init="onPageLoad()">
-    <div class="back-btn row glyphicon glyphicon-circle-arrow-left"></div>
+<div ng-controller="distributeListController" ng-init="onPageLoad()">
+    <button class="row back-btn">
+        <span class="glyphicon glyphicon-circle-arrow-left"></span>
+    </button>
     <div class="mail-box">
-        <div class="row" style="width: 100%">
-            <div class="col-sm-10">与贵公司的境经济来往明细</div>
-            <div class="col-sm-2">2015-06-05</div>
-            <div class="receiver-address-div col-sm-6">vvliebe@gmail.com</div>
+        <div class="row">
+            <div class="col-sm-10 title">与贵公司的境经济来往明细</div>
+            <div class="col-sm-2 time">2015-06-05</div>
+            <div class="col-sm-12 email">vvliebe@gmail.com</div>
+            <div class="division-line col-sm-12"></div>
         </div>
 
         <div class="row">
-            <div class="receiver-address-div col-sm-6">分发</div>
+            <div class="receiver-address-div col-sm-12">分发</div>
+            <div class="division-line col-sm-12"></div>
         </div>
+
         <div class="row">
             <div class="receiver-address-div col-sm-4">处理人员</div>
             <div class="receiver-address-div col-sm-6">设定时限</div>
             <div class="receiver-address-div col-sm-2"><button>确定</button></div>
             <div class="receiver-address-div col-sm-12">查阅人员</div>
+            <div class="division-line col-sm-12"></div>
         </div>
 
         <div class="row">
             <div class="receiver-address-div col-sm-12">
                 <label>12334</label>
             </div>
+            <div class="division-line col-sm-12"></div>
         </div>
+
         <div class="row">
             <div class="receiver-address-div col-sm-12">adfadsfasdfadsfadsf</div>
+            <div class="division-line col-sm-12"></div>
         </div>
+
     </div>
 </div>
