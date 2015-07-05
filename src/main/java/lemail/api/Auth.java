@@ -52,7 +52,7 @@ public class Auth {
     /**
      * 注册新用户
      */
-    public String signup() {
+    public String signUp() {
         User u = new User(username, password, name, role, department_id);
         if (default_checker != null) {
             u.setChecker((User) DBSession.find_first(User.class, Restrictions.eq("id", default_checker)));
