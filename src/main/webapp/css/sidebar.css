@@ -5,6 +5,7 @@
     left: 0;
     background-color: #9C9C9C;
     width: 200px;
+    padding-top: 20px;
 }
 
 .sidebar-div ul{
@@ -24,24 +25,24 @@
     cursor: pointer;
     transition: background 150ms ease-in-out;
     background-color: #9C9C9C;
-    margin-top: 10px;
     color: #ffffff;
 }
 
 .sidebar-div li:hover{
     background-color: #B4B4B4;
-    margin-top: 10px;
 
 }
 
 .division-div{
+    height: 10px;
     border-bottom: 1px solid #7E7D7D;
+    margin-bottom: 15px;
+    margin-top: -3px;
 }
 
 .division-div span {
     position: relative;
     left: 80%;
-    top: 10px;
     z-index: 5;
     background-color: #9C9C9C;
     font-size: small;
