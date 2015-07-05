@@ -14,11 +14,11 @@
                 <div class="col-sm-10 title">{{mail.subject}}</div>
                 <div class="col-sm-2 time">{{mail.date}}</div>
             </div>
-            <div class="row">
+            <div class="row has-division">
                 <div class="col-sm-12 email">{{mail.from}}</div>
             </div>
 
-            <div class="row">
+            <div class="row has-division">
                 <div class="receiver-address-div col-sm-12">分发</div>
             </div>
 
@@ -26,31 +26,31 @@
                 <div class="receiver-address-div col-sm-4">
                     处理人员
                     <select>
-                        <option ng-repeat="user in users" value="{{user.id}}">{{user.name}}</option>
+                        <option ng-repeat="user in users" value="{{user.id}}" ng-click="selectHandler(user)">{{user.name}}</option>
                     </select>
-                    <label>侠客</label>
+                    <label>{{selectedHandler.name}}</label>
                 </div>
                 <div class="receiver-address-div col-sm-6">设定时限</div>
                 <div class="receiver-address-div col-sm-2"><button>确定</button></div>
             </div>
-            <div class="row">
+            <div class="row has-division">
                 <div class="receiver-address-div col-sm-12">
                     查阅人员
                     <select>
                         <option ng-repeat="user in users" value="{{user.id}}">{{user.name}}</option>
                     </select>
-                    <label>侠客</label>
+                    <label>下课</label>
                 </div>
                 <div class="division-line col-sm-12"></div>
             </div>
 
-            <div class="row">
+            <div class="row has-division">
                 <div class="receiver-address-div col-sm-12">
                     <label>{{mail.tag}}</label>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row has-division">
                 <div class="receiver-address-div col-sm-12">{{mail.content}}</div>
             </div>
 
