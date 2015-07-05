@@ -5,9 +5,11 @@ import lemail.model.User;
 import lemail.utils.Action;
 import lemail.utils.Condition;
 import lemail.utils.DBSession;
+import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,13 +29,20 @@ public class Handler {
     }
 
 
-    public String id;
+    public Integer id;
 
-    public String getInboxMail() {
+    public String getDetail() {
         try {
             checkUser();
             Inbox mail = (Inbox) DBSession.find_first(
                     Inbox.class, Restrictions.eq("id", id));
+            if (mail.getState() == 2 || mail.getState() == 6) {
+                mail.setState(3);
+                Session s = DBSession.getSession();
+                s.beginTransaction();
+                s.update(mail);
+                s.getTransaction().commit();
+            }
             Action.echojson(0, "success", mail.toJson());
             return null;
         } catch (HandlerException e) {
@@ -43,15 +52,35 @@ public class Handler {
     }
 
     /**
-     * 获取用户的全部邮件
+     * 获取用户的未处理全部邮件
      */
-    public String getAll() {
+    public String getNotHandle() {
         try {
             checkUser();
             int uid = (Integer) Action.getSession("uid");
             if (page == null)
                 page = 0;
-            Action.echojson(0, "success", getList("from Inbox", page * 10, 10, "order by date desc", new Condition("belong", "handler.id = :belong", uid)));
+            Action.echojson(0, "success", getList("from Inbox", page * 10, 10,
+                    "order by date desc",
+                    new Condition("belong", "handler.id = :belong", uid),
+                    new Condition("states", "state in (:states)", Arrays.asList(2, 3, 6))));
+            return null;
+        } catch (HandlerException e) {
+            e.printStackTrace();
+            return Action.error(e.id, e.getMessage());
+        }
+    }
+
+    public String getHandled() {
+        try {
+            checkUser();
+            int uid = (Integer) Action.getSession("uid");
+            if (page == null)
+                page = 0;
+            Action.echojson(0, "success", getList("from Inbox", page * 10, 10,
+                    "order by date desc",
+                    new Condition("belong", "handler.id = :belong", uid),
+                    new Condition("states", "state not in (:states)", Arrays.asList(2, 3, 6))));
             return null;
         } catch (HandlerException e) {
             e.printStackTrace();
