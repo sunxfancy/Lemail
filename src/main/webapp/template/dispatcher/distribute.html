@@ -25,8 +25,8 @@
             <div class="row">
                 <div class="receiver-address-div col-sm-4">
                     处理人员
-                    <select>
-                        <option ng-repeat="user in users" value="{{user.id}}" ng-click="selectHandler(user)">{{user.name}}</option>
+                    <select ng-model="selectedHandler" style="width: 200px">
+                        <option repeat="user in users" value="{{user.id}}">{{user.name}}</option>
                     </select>
                     <label>{{selectedHandler.name}}</label>
                 </div>
