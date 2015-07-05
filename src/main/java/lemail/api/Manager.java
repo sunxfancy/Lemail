@@ -50,7 +50,7 @@ public class Manager {
     public String username;
     public String password;
     public String hostname; // smtp
-    public String hostname_send; // imap
+    public String hostname_imap; // imap
 
     /**
      * 设置邮箱配置信息
@@ -62,7 +62,7 @@ public class Manager {
                     username,
                     password,
                     hostname,
-                    hostname_send
+                    hostname_imap
             );
             return Action.success();
         } catch (ApiException e) {

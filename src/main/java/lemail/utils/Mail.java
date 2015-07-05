@@ -1,8 +1,10 @@
 package lemail.utils;
 
 import javax.mail.*;
+import javax.mail.Message;
 import javax.mail.internet.*;
-import javax.mail.search.SearchTerm;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -16,7 +18,8 @@ public class Mail {
     private String hostname;
     private String hostname_send;
     private Authenticator auth;
-
+    Session session;
+    Store store;
     public Mail(String _username, String _password, String _hostname, String _hostname_send) {
         this.username = _username;
         this.password = _password;
@@ -85,29 +88,27 @@ public class Mail {
     // 得到所有的邮件
     public Message[] getBox(String boxname) throws Exception {
         Properties props=System.getProperties();
-        props.setProperty("mail.pop3s.rsetbeforequit","true");
-        props.setProperty("mail.pop3.rsetbeforequit","true");
-        Session session=Session.getInstance(props,null);
+        String protocol = hostname_send.split("\\.")[0];
+        props.put("mail.store.protocol", protocol);
+        props.put("mail.imap.host", hostname_send);
+        session=Session.getInstance(props,null);
         // 打印出错误信息
         session.setDebug(true);
 
-        Store store = session.getStore(hostname_send.split("\\.")[0]);
+        store = session.getStore(protocol);
         store.connect(hostname_send, username, password);
         Folder folder = store.getFolder(boxname);
         if( folder==null )
             throw new Exception("No default folder");
         folder.open(Folder.READ_WRITE);
-        return folder.search(new SearchTerm() {
-            @Override
-            public boolean match(Message message) {
-                try {
-                    return !(message.getFlags().contains(Flags.Flag.SEEN));
-                } catch (MessagingException e) {
-                    e.printStackTrace();
-                    return false;
-                }
+        Message[] msgs =folder.getMessages();
+        List<Message> lists = new ArrayList<>();
+        for (Message m : msgs) {
+            if (!m.getFlags().contains(Flags.Flag.SEEN)) {
+                lists.add(m);
             }
-        });
+        }
+        return lists.toArray(new Message[lists.size()]);
     }
 
 

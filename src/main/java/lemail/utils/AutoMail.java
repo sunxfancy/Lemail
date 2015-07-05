@@ -1,6 +1,7 @@
 package lemail.utils;
 
 import lemail.model.Inbox;
+import org.hibernate.Transaction;
 
 import javax.mail.*;
 import javax.mail.internet.MimeUtility;
@@ -52,27 +53,30 @@ public class AutoMail {
         Message[] msgs = mail.getBox("INBOX");
         for (Message msg : msgs) {
             try {
-                String content = null;
+                String content = msg.getContent().toString();
                 StringBuilder sb = null;
-                if (msg.getContentType().contains("multipart")) {
-                    sb = new StringBuilder();
-                    content = multipart(msg, sb);
-                } else {
-                    content = msg.getContent().toString();
-                }
+//                if (msg.getContentType().contains("multipart")) {
+//                    sb = new StringBuilder();
+//                    content = multipart(msg, sb);
+//                } else {
+//                    content =
+//                }
                 System.out.println(msg.getSubject());
                 System.out.println(content);
                 System.out.println(msg.getSentDate());
                 System.out.println(msg.getFrom()[0].toString());
                 Inbox in_msg = new Inbox(
                     msg.getSubject(),
-                    content,
+                    msg.getContent().toString(),
                     msg.getSentDate(),
                     msg.getFrom()[0].toString()
                 );
                 if (sb != null)
                     in_msg.setAttachment(sb.toString());
+                Transaction t = DBSession.getSession().getTransaction();
+                t.begin();
                 DBSession.getSession().save(in_msg);
+                t.commit();
                 msg.getFlags().add(Flags.Flag.SEEN);
             }catch(Exception e){
                 e.printStackTrace();

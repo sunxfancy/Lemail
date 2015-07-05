@@ -18,17 +18,17 @@ public class MailTest extends TestCase {
         Mail mail = new Mail("lemailtest@sina.com", "1234qwer", "smtp.sina.com", "imap.sina.com");
         Message[] msgs = mail.getBox("INBOX");
         for (Message msg : msgs) {
+            if (msg.getFlags().contains(Flags.Flag.SEEN)) continue;
             System.out.println("Subject:" + msg.getSubject());
             System.out.println("Content:" + msg.getContent().toString());
             boolean b = msg.getFlags().contains(Flags.Flag.SEEN);
             if (!b) {
                 System.out.println("这封信你还没读呢");
-                msg.setFlag(Flags.Flag.SEEN, true);
             }
         }
-        mail.getBox("SENT");
-        mail.getBox("DRAFTS");// 草稿
-        mail.getBox("TRASH"); // 已删除
-        mail.getBox("JUNK");  // 垃圾邮件
+//        mail.getBox("SENT");
+//        mail.getBox("DRAFTS");// 草稿
+//        mail.getBox("TRASH"); // 已删除
+//        mail.getBox("JUNK");  // 垃圾邮件
     }
 }

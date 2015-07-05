@@ -20,6 +20,8 @@
     </package>
     <package name="manager" extends="struts-default" namespace="/api/manager">
         <action name="department" class="lemail.api.Manager" method="departmentList"/>
+        <action name="setconf" class="lemail.api.Manager" method="setConf"/>
+        <action name="getconf" class="lemail.api.Manager" method="getConf"/>
     </package>
     <package name="test" extends="struts-default">
         <action name="test" class="lemail.api.Test" method="test"/>
