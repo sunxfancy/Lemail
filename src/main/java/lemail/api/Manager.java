@@ -49,7 +49,7 @@ public class Manager {
 
     public String username;
     public String password;
-    public String hostname; // smtp
+    public String hostname_smtp; // smtp
     public String hostname_imap; // imap
 
     /**
@@ -61,7 +61,7 @@ public class Manager {
             AutoMail.getInstance().setProp(
                     username,
                     password,
-                    hostname,
+                    hostname_smtp,
                     hostname_imap
             );
             return Action.success();
@@ -80,16 +80,16 @@ public class Manager {
             AutoMail m = AutoMail.getInstance();
             String username = m.getUsername();
             String password = m.getPassword();
-            String hostname = m.getHostname();
-            String hostname_send = m.getHostname_send();
+            String hostname_smtp = m.getHostname();
+            String hostname_imap = m.getHostname_send();
 
             Action.echojson(0,"success",
                     String.format(
                             "{\"username\":\"%s\"," +
                              "\"password\":\"%s\"," +
-                             "\"hostname\":\"%s\"," +
-                             "\"hostname_send\":\"%s\"}",
-                            username, password, hostname, hostname_send));
+                             "\"hostname_smtp\":\"%s\"," +
+                             "\"hostname_imap\":\"%s\"}",
+                            username, password, hostname_smtp, hostname_imap));
 
             return null;
         } catch (ApiException e) {
