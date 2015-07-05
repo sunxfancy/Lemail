@@ -13,12 +13,15 @@
         <action name="change" class="lemail.api.Auth" method="change"/>
     </package>
     <package name="dispatcher" extends="struts-default" namespace="/api/dispatcher">
-        <action name="getall" class="lemail.api.Dispatcher" method="getAll" />
-        <action name="detail" class="lemail.api.Dispatcher" method="showDetail" />
-        <action name="dispatch" class="lemail.api.Dispatcher" method="dispatch" />
+        <action name="getall" class="lemail.api.Dispatcher" method="getAll"/>
+        <action name="detail" class="lemail.api.Dispatcher" method="showDetail"/>
+        <action name="dispatch" class="lemail.api.Dispatcher" method="dispatch"/>
+        <action name="handlers" class="lemail.api.Dispatcher" method="getHandlers"/>
     </package>
     <package name="manager" extends="struts-default" namespace="/api/manager">
         <action name="department" class="lemail.api.Manager" method="departmentList"/>
+        <action name="setconf" class="lemail.api.Manager" method="setConf"/>
+        <action name="getconf" class="lemail.api.Manager" method="getConf"/>
     </package>
     <package name="test" extends="struts-default">
         <action name="test" class="lemail.api.Test" method="test"/>

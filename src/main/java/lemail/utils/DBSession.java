@@ -11,6 +11,8 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -64,9 +66,9 @@ public class DBSession {
         return first(dc);
     }
 
-    public static List executeSql(String sql, int offset, int max, Condition... conditions) {
+    public static List executeSql(String sql, int offset, int max, String order, Condition... conditions) {
         Session s = getSession();
-        StringBuilder sb = new StringBuilder(sql);
+        StringBuilder sb = new StringBuilder(sql + " ");
         if (conditions.length > 0) {
             sb.append(" where ");
             for (int i = 0; i < conditions.length; i++) {
@@ -77,12 +79,16 @@ public class DBSession {
                 }
             }
         }
+        sb.append(order);
         try {
             s.beginTransaction();
             Query q = s.createQuery(sb.toString()).setFirstResult(offset).setMaxResults(max);
             if (conditions.length > 0) {
                 for (int i = 0; i < conditions.length; i++) {
-                    q.setParameter(i, conditions[i].getValue());
+                    if (conditions[i].getValue() instanceof Collection) {
+                        q.setParameterList(conditions[i].getName(), (Collection) (conditions[i].getValue()));
+                    } else
+                        q.setParameter(conditions[i].getName(), conditions[i].getValue());
                 }
             }
             List l = q.list();
@@ -112,7 +118,10 @@ public class DBSession {
             Query q = s.createQuery(sql.toString());
             if (conditions.length > 0) {
                 for (int i = 0; i < conditions.length; i++) {
-                    q.setParameter(i, conditions[i].getValue());
+                    if (conditions[i].getValue() instanceof Collection) {
+                        q.setParameterList(conditions[i].getName(), (Collection) (conditions[i].getValue()));
+                    } else
+                        q.setParameter(conditions[i].getName(), conditions[i].getValue());
                 }
             }
             result = ((Number) q.uniqueResult()).intValue();

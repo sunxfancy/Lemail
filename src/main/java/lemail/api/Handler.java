@@ -28,7 +28,9 @@ public class Handler {
     public String getInboxMail() {
         try {
             checkUser();
-
+            Inbox mail = (Inbox) DBSession.find_first(
+                    Inbox.class, Restrictions.eq("id", id));
+            Action.echojson(0, "success", mail.toJson());
             return null;
         } catch (HandlerException e) {
             e.printStackTrace();

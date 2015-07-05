@@ -3,13 +3,13 @@
     top: 50px;
     bottom: 0;
     left: 0;
-    background-color: #aaaaaa;
+    background-color: #9C9C9C;
     width: 200px;
 }
 
 .sidebar-div ul{
     margin: 0 0 10px 0;
-    background-color: #ccc;
+    background-color: #9C9C9C;
     list-style: none;
     padding: 0;
 }
@@ -23,14 +23,19 @@
     text-indent: 25px;
     cursor: pointer;
     transition: background 150ms ease-in-out;
+    background-color: #9C9C9C;
+    margin-top: 10px;
+    color: #ffffff;
 }
 
 .sidebar-div li:hover{
-    background-color: #eeeeee;
+    background-color: #B4B4B4;
+    margin-top: 10px;
+
 }
 
 .division-div{
-    border-bottom: 1px solid #bbbbbb;
+    border-bottom: 1px solid #7E7D7D;
 }
 
 .division-div span {
@@ -38,6 +43,6 @@
     left: 80%;
     top: 10px;
     z-index: 5;
-    background-color: #cccccc;
+    background-color: #9C9C9C;
     font-size: small;
 }
