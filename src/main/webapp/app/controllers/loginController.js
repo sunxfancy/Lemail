@@ -22,9 +22,8 @@ LeMailModule.controller('loginController', ['$scope','$http','$location', '$temp
                  //console.log(config);
                  if (response.status == 0){
                      // login success
-                     $scope.$emit('login', response.data);
-                     $templateCache.removeAll();
                      $location.path("/home");
+                     $scope.$emit('login', response.data);
                  }else if(response.status == 1000){
 
                  }else if(response.status == 1001){
