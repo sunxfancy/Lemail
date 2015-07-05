@@ -16,12 +16,8 @@
 }
 
 .mail-box {
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    bottom: 50px;
-    right: 50px;
-    background-color: #269abc;
+    /*position: absolute;*/
+    margin: 50px;
 }
 
 .mail-box>div{
@@ -40,7 +36,8 @@
     font-size: small;
 }
 
-.mail-box .division-line{
+.mail-box > div:after{
     height: 1px;
+    width: 100%;
     background-color: #4C4C4C;
 }
