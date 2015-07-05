@@ -79,7 +79,8 @@ public class DBSession {
                 }
             }
         }
-        sb.append(order);
+        if(order!=null)
+            sb.append(order);
         try {
             s.beginTransaction();
             Query q = s.createQuery(sb.toString()).setFirstResult(offset).setMaxResults(max);

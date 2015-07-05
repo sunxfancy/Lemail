@@ -46,3 +46,13 @@
     background-color: #9C9C9C;
     font-size: small;
 }
+
+.white {
+   color: #ffffff;
+}
+
+.grey {
+    padding-left: 2px;
+    padding-right: 2px;
+    color: #7E7D7D;
+}
