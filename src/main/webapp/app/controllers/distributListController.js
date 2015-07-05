@@ -2,7 +2,7 @@
  * Created by sxf on 15-7-4.
  */
 
-LeMailModule.controller('distributListController', ['$scope','$http',function($scope, $http){
+LeMailModule.controller('distributListController', ['$scope','$http','$location',function($scope, $http, $location){
     $scope.sum_mail = 3;
     $scope.messages = [
         {
@@ -103,8 +103,8 @@ LeMailModule.controller('distributListController', ['$scope','$http',function($s
     };
 
     $scope.distribute = function(){
-        $scope.$emit('changeMainContent', '/template/distribute/distribute.html');
-    }
+      $location.path('/dispatcher/distribute')
+    };
 
     $scope.inform = function($event){
         alert("大圣，快去实现distributeController的inform方法");

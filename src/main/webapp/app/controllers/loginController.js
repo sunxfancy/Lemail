@@ -22,7 +22,7 @@ LeMailModule.controller('loginController', ['$scope','$http','$location', '$temp
                  //console.log(config);
                  if (response.status == 0){
                      // login success
-                     $location.path("/home");
+                     $location.path("/dispatcher");
                      $scope.$emit('login', response.data);
                  }else if(response.status == 1000){
 
