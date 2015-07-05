@@ -54,7 +54,7 @@ public class AutoMail {
      */
     public void Update() throws Exception {
         Date now = new Date();
-        if (now.getTime() - last.getTime() < 60 * 1000 ) return;
+        if (now.getTime() - last.getTime() < 600 * 1000 ) return;
         last = now;
 
         mail = new Mail(username, password, hostname, hostname_send);
