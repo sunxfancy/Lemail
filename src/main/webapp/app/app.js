@@ -81,6 +81,7 @@ LeMailModule.controller('LeMailController',['$scope', '$http', '$location', '$te
             if (response.status == 0){
                 $scope.user = response.data;
                 $scope.title = "欢迎使用Lemail";
+
                 $templateCache.removeAll();
             }else if(response.status == 401){
                 $location.path("/login");
