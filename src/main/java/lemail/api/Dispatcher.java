@@ -4,6 +4,7 @@ import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 import lemail.model.Inbox;
 import lemail.model.User;
 import lemail.utils.Action;
+import lemail.utils.AutoMail;
 import lemail.utils.Condition;
 import lemail.utils.DBSession;
 import org.hibernate.Session;
@@ -24,6 +25,7 @@ public class Dispatcher {
     public String getAll() {
         try {
             check();
+            AutoMail.getInstance().Update();
             if (page == null)
                 page = 0;
             Action.echojson(0, "success", getList("from Inbox", page * 10, 10, "order by date desc"));
@@ -83,9 +85,10 @@ public class Dispatcher {
                 if (readers != null) {
                     String[] rs = readers.split("\\|");
                     for (String r : rs) {
-                        inbox.getReaders().add((User) DBSession
+                        User u = (User) DBSession
                                 .find_first(User.class,
-                                        Restrictions.eq("id", Integer.parseInt(r))));
+                                        Restrictions.eq("id", Integer.parseInt(r)));
+                        inbox.getReaders().add(u);
                     }
                 }
                 s.beginTransaction();
