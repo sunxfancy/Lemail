@@ -5,7 +5,7 @@
     <div ng-include="'/template/common/sidebar.html'"></div>
 
     <div class="content-div">
-        <form class="manager-form" ng-controller="managerConfController">
+        <form class="manager-form" ng-controller="managerConfController" ng-init="onPageLoad()">
             <div class="form-group">
                 <label>Username</label>
                 <input type="email" class="form-control" placeholder="Email@163.com" ng-model="conf.username">
@@ -22,7 +22,8 @@
                 <label>Hostname - imap</label>
                 <input type="text" class="form-control" placeholder="e.g. imap.163.com" ng-model="conf.hostname_imap">
             </div>
-            <button type="submit" class="btn btn-success">保存</button>
+            <button type="submit" class="btn btn-success" ng-click="onSave()">保存</button>
+            <label>{{message}}</label>
         </form>
     </div>
 </div>
