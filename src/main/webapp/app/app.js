@@ -2,8 +2,7 @@
  * Created by vvliebe on 6/29/15.
  */
 
-var LeMailModule = angular.module('LeMailModule', ['ngRoute', 'textAngular']);
-
+var LeMailModule = angular.module('LeMailModule', ['ngRoute','ngSanitize', 'ui.select', 'textAngular']);
 
 LeMailModule.config(['$routeProvider', "$httpProvider",  function($routeProvider, $httpProvider){
     if (!$httpProvider.defaults.headers.get) {
