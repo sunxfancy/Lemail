@@ -16,6 +16,16 @@ LeMailModule.config(['$routeProvider', "$httpProvider",  function($routeProvider
     $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
     $routeProvider.when('/login',{
         templateUrl: '/template/login.html'
+    }).when('/home',{
+        templateUrl: '/template/home.html'
+    }).when('/home/dispatcher',{
+        templateUrl: '/template/dispatcher.html'
+    }).when('/home/reviewer',{
+        templateUrl: '/template/reviewer.html'
+    }).when('/handler',{
+        templateUrl: '/template/handler.html'
+    }).when('/manager',{
+        templateUrl: '/template/manager.html'
     }).otherwise({
         templateUrl: '/template/home.html'
     });
