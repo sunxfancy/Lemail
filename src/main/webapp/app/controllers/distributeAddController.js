@@ -24,6 +24,8 @@ LeMailModule.controller('distributeListController',  ['$scope','$http',function(
         {id: 1, name:"侠客"},
         {id: 2, name:"熊"}
     ];
+
+
     $scope.onPageLoad = function(){
 
     }
