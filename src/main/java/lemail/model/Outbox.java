@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -33,6 +34,8 @@ public class Outbox implements Serializable {
     private String to;
     @Column(name = "`tag`")
     private String tag;
+    @Column(name = "`sender_id`")
+    private Integer sender_id;
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "checker")
     private User checker;
@@ -120,5 +123,56 @@ public class Outbox implements Serializable {
 
     public void setChecker(User checker) {
         this.checker = checker;
+    }
+
+    public Integer getSender_id() {
+        return sender_id;
+    }
+
+    public void setSender_id(Integer sender_id) {
+        this.sender_id = sender_id;
+    }
+
+    public String toJson() {
+        String str;
+        String tmp_tag;
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        String tmp_attach = "null";
+        if (tag == null) {
+            tmp_tag = "null";
+        } else {
+            tmp_tag = "\"" + tag + "\"";
+        }
+        if (attachment != null) {
+            tmp_attach = "\"" + attachment + "\"";
+        }
+        str = String.format("{\"id\":%d, \"subject\":\"%s\", \"content\":\"%s\"," +
+                        "\"state\":%d, \"date\":\"%s\", \"attachment\":%s, \"to\":\"%s\"," +
+                        "\"tag\":%s,\"checker\":%s}",
+                id, subject, content, state, format.format(date), tmp_attach, to, tmp_tag, formatChecker());
+        return str;
+    }
+
+    public String toJsonNoData() {
+        String str;
+        String tmp_tag;
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        if (tag == null) {
+            tmp_tag = "null";
+        } else {
+            tmp_tag = "\"" + tag + "\"";
+        }
+        str = String.format("{\"id\":%d, \"subject\":\"%s\", " +
+                        "\"state\":%d, \"date\":\"%s\", \"to\":\"%s\"," +
+                        "\"tag\":%s,\"checker\":%s}",
+                id, subject, state, format.format(date), to, tmp_tag, formatChecker());
+        return str;
+    }
+
+    private String formatChecker() {
+        if(checker!=null)
+            return checker.toSimpleJson();
+        else
+            return "null";
     }
 }

@@ -1,6 +1,7 @@
 package lemail.api;
 
 import lemail.model.Inbox;
+import lemail.model.Outbox;
 import lemail.model.User;
 import lemail.utils.Action;
 import lemail.utils.Condition;
@@ -88,6 +89,33 @@ public class Handler {
         }
     }
 
+    public String getOutboxDetail() {
+        try {
+            checkUser();
+            Outbox mail = (Outbox) DBSession.find_first(
+                    Outbox.class, Restrictions.eq("id", id));
+            Action.echojson(0, "success", mail.toJson());
+            return null;
+        } catch (HandlerException e) {
+            e.printStackTrace();
+            return Action.error(e.id, e.getMessage());
+        }
+    }
+
+    public String getOutboxList() {
+        try {
+            checkUser();
+            if (page == null)
+                page = 0;
+            int uid = (Integer) Action.getSession("uid");
+            Action.echojson(0, "success", getOutboxList("from Outbox", page * 10, 10, "order by date desc", new Condition("sender", "sender_id = :sender", uid)));
+            return null;
+        } catch (HandlerException e) {
+            e.printStackTrace();
+            return Action.error(e.id, e.getMessage());
+        }
+    }
+
     /**
      * 获取用户
      */
@@ -115,6 +143,28 @@ public class Handler {
         StringBuilder sb = new StringBuilder();
         sb.append("{\"list\":[");
         for (Inbox itememail : inboxMails) {
+            sb.append(itememail.toJsonNoData());
+            sb.append(',');
+        }
+        if (sb.length() > 9) {
+            sb.setCharAt(sb.length() - 1, ']');
+            sb.append(",");
+        } else {
+            sb.append("],");
+        }
+        sb.append("\"page\":");
+        sb.append(page + 1);
+        sb.append(String.format(",\"sum\":%d", count % 10 == 0 ? count / 10 : count / 10 + 1));
+        sb.append("}");
+        return sb.toString();
+    }
+
+    private String getOutboxList(String sql, int offset, int max, String order, Condition... conditions) {
+        List<Outbox> outboxMails = DBSession.executeSql(sql, offset, max, order, conditions);
+        int count = DBSession.count("Outbox", conditions);
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"list\":[");
+        for (Outbox itememail : outboxMails) {
             sb.append(itememail.toJsonNoData());
             sb.append(',');
         }

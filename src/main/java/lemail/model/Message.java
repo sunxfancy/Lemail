@@ -1,7 +1,11 @@
 package lemail.model;
 
+import lemail.utils.DBSession;
+import org.hibernate.criterion.Restrictions;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -15,8 +19,9 @@ public class Message implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
     private Integer id;
-    @Column(name = "`from`")
-    private Integer from;
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "`from`")
+    private User from;
     @Column(name = "`to`")
     private Integer to;
     @Column(name = "`date`")
@@ -28,7 +33,7 @@ public class Message implements Serializable {
     @Column(name = "`mail_checked_id`")
     private Integer mail_checked_id;
 
-    public Message(Integer from, Integer to, Date date, String content) {
+    public Message(User from, Integer to, Date date, String content) {
         this.from = from;
         this.to = to;
         this.date = date;
@@ -48,11 +53,11 @@ public class Message implements Serializable {
         this.id = id;
     }
 
-    public Integer getFrom() {
+    public User getFrom() {
         return from;
     }
 
-    public void setFrom(Integer from) {
+    public void setFrom(User from) {
         this.from = from;
     }
 
@@ -94,5 +99,22 @@ public class Message implements Serializable {
 
     public void setMailCheckedId(Integer mailCheckedId) {
         this.mail_checked_id = mailCheckedId;
+    }
+
+    public String toJson() {
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        return String.format("{\"id\":%d,\"to\":%d,\"from\":%s,\"date\":\"%s\"," +
+                        "\"content\":\"%s\",\"state\":%d,\"mail\":%s}",
+                id, to, from.toSimpleJson(),
+                format.format(date), content, state, formatMail());
+    }
+
+    public String formatMail() {
+        String str = "null";
+        if (mail_checked_id != null) {
+            Outbox o = (Outbox) DBSession.find_first(Outbox.class, Restrictions.eq("id", mail_checked_id));
+            str = String.format("{\"id\":%d,\"subject\":\"%s\"}", o.getId(), o.getSubject());
+        }
+        return str;
     }
 }

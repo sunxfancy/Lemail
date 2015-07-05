@@ -1,8 +1,6 @@
-CREATE DATABASE  IF NOT EXISTS `Lemail` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `Lemail`;
--- MySQL dump 10.13  Distrib 5.5.43, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: Lemail
+-- Host: 192.168.137.2    Database: Lemail
 -- ------------------------------------------------------
 -- Server version	5.5.43-0ubuntu0.14.04.1
 
@@ -35,11 +33,6 @@ CREATE TABLE `department` (
 -- Dumping data for table `department`
 --
 
-LOCK TABLES `department` WRITE;
-/*!40000 ALTER TABLE `department` DISABLE KEYS */;
-/*!40000 ALTER TABLE `department` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `inbox`
 --
@@ -67,11 +60,6 @@ CREATE TABLE `inbox` (
 --
 -- Dumping data for table `inbox`
 --
-
-LOCK TABLES `inbox` WRITE;
-/*!40000 ALTER TABLE `inbox` DISABLE KEYS */;
-/*!40000 ALTER TABLE `inbox` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `message`
@@ -102,11 +90,6 @@ CREATE TABLE `message` (
 -- Dumping data for table `message`
 --
 
-LOCK TABLES `message` WRITE;
-/*!40000 ALTER TABLE `message` DISABLE KEYS */;
-/*!40000 ALTER TABLE `message` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `outbox`
 --
@@ -124,8 +107,11 @@ CREATE TABLE `outbox` (
   `to` varchar(200) DEFAULT NULL,
   `tag` varchar(200) DEFAULT NULL,
   `checker` int(11) DEFAULT NULL,
+  `sender_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_outbox_1_idx` (`checker`),
+  KEY `fk_outbox_sender_idx` (`sender_id`),
+  CONSTRAINT `fk_outbox_sender` FOREIGN KEY (`sender_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_outbox_user` FOREIGN KEY (`checker`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -133,11 +119,6 @@ CREATE TABLE `outbox` (
 --
 -- Dumping data for table `outbox`
 --
-
-LOCK TABLES `outbox` WRITE;
-/*!40000 ALTER TABLE `outbox` DISABLE KEYS */;
-/*!40000 ALTER TABLE `outbox` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -167,11 +148,6 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `user_inbox`
 --
@@ -193,10 +169,6 @@ CREATE TABLE `user_inbox` (
 -- Dumping data for table `user_inbox`
 --
 
-LOCK TABLES `user_inbox` WRITE;
-/*!40000 ALTER TABLE `user_inbox` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_inbox` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -207,4 +179,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-06-29 19:27:46
+-- Dump completed on 2015-07-05 17:05:34
