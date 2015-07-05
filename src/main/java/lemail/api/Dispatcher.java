@@ -151,7 +151,7 @@ public class Dispatcher {
         }
         sb.append("\"page\":");
         sb.append(page + 1);
-        sb.append(String.format(",\"sum\":%d", count % 10 == 0 ? count % 10 + 1 : count % 10));
+        sb.append(String.format(",\"sum\":%d", count % 10 == 0 ? count / 10 + 1 : count / 10));
         sb.append("}");
         return sb.toString();
     }
