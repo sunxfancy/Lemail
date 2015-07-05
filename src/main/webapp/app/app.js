@@ -18,16 +18,18 @@ LeMailModule.config(['$routeProvider', "$httpProvider",  function($routeProvider
         templateUrl: '/template/login.html'
     }).when('/home',{
         templateUrl: '/template/home.html'
-    }).when('/home/dispatcher',{
+    }).when('/dispatcher',{
         templateUrl: '/template/dispatcher.html'
-    }).when('/home/reviewer',{
+    }).when('/reviewer',{
         templateUrl: '/template/reviewer.html'
     }).when('/handler',{
         templateUrl: '/template/handler.html'
     }).when('/manager',{
         templateUrl: '/template/manager.html'
+    }).when('/dispatcher/distribute',{
+        templateUrl: '/template/dispatcher/distribute.html'
     }).otherwise({
-        templateUrl: '/template/home.html'
+        templateUrl: '/template/login.html'
     });
 }]);
 
@@ -54,22 +56,22 @@ LeMailModule.controller('LeMailController',['$scope', '$http', '$location', '$te
         dispatcher: {
             title: '分发',
             item: ['所有邮件'],
-            url: ['/template/distribute/list.html']
+            url: ['/#/dispatcher']
         },
         reviewer: {
             title: '审核',
             item: ['审核列表'],
-            url: ['']
+            url: ['/#/reviewer']
         },
         handler: {
             title: '处理',
             item: ['已处理','未处理'],
-            url: ['', '']
+            url: ['/#/handler', '/#']
         },
         manager: {
             title: '管理',
             item: ['设置'],
-            url: ['']
+            url: ['/#/manager']
         }
     };
 
