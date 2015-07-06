@@ -103,6 +103,6 @@ public class Manager {
         String role = (String) Action.getSession("role");
         if (uid == null) throw new ApiException(401, "用户未登录");
         if (role == null || !role.contains("M"))
-            throw new ApiException(500, "用户缺少处理者权限");
+            throw new ApiException(403, "用户缺少处理者权限");
     }
 }

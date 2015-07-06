@@ -4,6 +4,7 @@ import lemail.model.Inbox;
 import lemail.model.Outbox;
 import lemail.model.User;
 import lemail.utils.Action;
+import lemail.utils.AutoMail;
 import lemail.utils.Condition;
 import lemail.utils.DBSession;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,9 +48,12 @@ public class Handler {
             }
             Action.echojson(0, "success", mail.toJson());
             return null;
-        } catch (HandlerException e) {
+        } catch (ApiException e) {
             e.printStackTrace();
-            return Action.error(e.id, e.getMessage());
+            return Action.error(e.getId(), e.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Action.error(-1, "未知异常");
         }
     }
 
@@ -66,9 +71,12 @@ public class Handler {
                     new Condition("belong", "handler.id = :belong", uid),
                     new Condition("states", "state in (:states)", Arrays.asList(2, 3, 6))));
             return null;
-        } catch (HandlerException e) {
+        } catch (ApiException e) {
             e.printStackTrace();
-            return Action.error(e.id, e.getMessage());
+            return Action.error(e.getId(), e.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Action.error(-1, "未知异常");
         }
     }
 
@@ -83,9 +91,12 @@ public class Handler {
                     new Condition("belong", "handler.id = :belong", uid),
                     new Condition("states", "state not in (:states)", Arrays.asList(2, 3, 6))));
             return null;
-        } catch (HandlerException e) {
+        } catch (ApiException e) {
             e.printStackTrace();
-            return Action.error(e.id, e.getMessage());
+            return Action.error(e.getId(), e.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Action.error(-1, "未知异常");
         }
     }
 
@@ -94,11 +105,16 @@ public class Handler {
             checkUser();
             Outbox mail = (Outbox) DBSession.find_first(
                     Outbox.class, Restrictions.eq("id", id));
+            if (mail == null)
+                return Action.error(404, "对应邮件不存在");
             Action.echojson(0, "success", mail.toJson());
             return null;
-        } catch (HandlerException e) {
+        } catch (ApiException e) {
             e.printStackTrace();
-            return Action.error(e.id, e.getMessage());
+            return Action.error(e.getId(), e.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Action.error(-1, "未知异常");
         }
     }
 
@@ -110,9 +126,84 @@ public class Handler {
             int uid = (Integer) Action.getSession("uid");
             Action.echojson(0, "success", getOutboxList("from Outbox", page * 10, 10, "order by date desc", new Condition("sender", "sender_id = :sender", uid)));
             return null;
-        } catch (HandlerException e) {
+        } catch (ApiException e) {
             e.printStackTrace();
-            return Action.error(e.id, e.getMessage());
+            return Action.error(e.getId(), e.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Action.error(-1, "未知异常");
+        }
+    }
+
+    public Boolean needreply;
+    public String subject;
+    public String content;
+    public String to;
+
+    public String handleMail() {
+        Session s = DBSession.getSession();
+        try {
+            checkUser();
+            int uid = (Integer) Action.getSession("uid");
+            Inbox in = (Inbox) DBSession.find_first(Inbox.class, Restrictions.eq("id", id));
+            if (in == null)
+                return Action.error(404, "对应邮件不存在");
+            if (!needreply && !in.isReview()) {
+                s.beginTransaction();
+                in.setState(7);
+                s.update(in);
+                s.getTransaction().commit();
+            } else {
+                Outbox o = new Outbox(subject, content, new Date(), to, uid);
+                if (in.isReview()) {
+                    User u = getUser();
+                    o.setChecker(u.getChecker());
+                    in.setState(4);
+                    o.setState(4);
+                } else {
+                    in.setState(7);
+                    o.setState(7);
+                    AutoMail.getInstance().post(subject, content, to.split(","));
+                }
+                s.beginTransaction();
+                s.save(o);
+                s.update(in);
+                s.getTransaction().commit();
+                Action.echojson(0, "success");
+            }
+            return null;
+        } catch (ApiException e) {
+            e.printStackTrace();
+            return Action.error(e.getId(), e.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Action.error(-1, "未知异常");
+        } finally {
+            s.close();
+        }
+    }
+
+    public String postMail() {
+        Session s = DBSession.getSession();
+        try {
+            checkUser();
+            int uid = (Integer) Action.getSession("uid");
+            Outbox o = new Outbox(subject, content, new Date(), to, uid);
+            o.setState(7);
+            AutoMail.getInstance().post(subject, content, to.split(","));
+            s.beginTransaction();
+            s.save(o);
+            s.getTransaction().commit();
+            Action.echojson(0, "success");
+            return null;
+        } catch (ApiException e) {
+            e.printStackTrace();
+            return Action.error(e.getId(), e.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Action.error(-1, "未知异常");
+        } finally {
+            s.close();
         }
     }
 
@@ -128,13 +219,13 @@ public class Handler {
     /**
      * 获取用户并检查
      *
-     * @throws HandlerException 报告用户未登录或无权限错误
+     * @throws ApiException 报告用户未登录或无权限错误
      */
-    private void checkUser() throws HandlerException {
+    private void checkUser() throws ApiException {
         Integer uid = (Integer) Action.getSession("uid");
         String role = (String) Action.getSession("role");
-        if (uid == null) throw new HandlerException(401, "用户未登录");
-        if (!role.contains("H")) throw new HandlerException(500, "用户缺少处理者权限");
+        if (uid == null) throw new ApiException(401, "用户未登录");
+        if (!role.contains("H")) throw new ApiException(403, "用户缺少处理者权限");
     }
 
     private String getList(String sql, int offset, int max, String order, Condition... conditions) {
@@ -179,14 +270,5 @@ public class Handler {
         sb.append(String.format(",\"sum\":%d", count % 10 == 0 ? count / 10 : count / 10 + 1));
         sb.append("}");
         return sb.toString();
-    }
-
-    private class HandlerException extends Exception {
-        int id;
-
-        public HandlerException(int id, String message) {
-            super(message);
-            this.id = id;
-        }
     }
 }

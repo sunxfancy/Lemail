@@ -26,7 +26,7 @@ public class AutoMail {
     private String hostname = "";
     private String hostname_send = "";
     // 路径配置项
-    private final String path="save.prop";
+    private final String path = "save.prop";
     private final String attachment_path = "./attachment/";
 
     public AutoMail() {
@@ -39,7 +39,7 @@ public class AutoMail {
         this.password = password;
         this.hostname = hostname;
         this.hostname_send = hostname_send;
-        mail = new Mail(username, password, hostname,hostname_send);
+        mail = new Mail(username, password, hostname, hostname_send);
         save();
         try {
             Update();
@@ -47,14 +47,16 @@ public class AutoMail {
             e.printStackTrace();
         }
     }
+
     /**
      * 核心更新方法，每次调用，都会向邮件客户端拉取邮件
      * 如果获取不到邮件，会抛出异常
+     *
      * @throws Exception 无法获得邮件的信息
      */
     public void Update() throws Exception {
         Date now = new Date();
-        if (now.getTime() - last.getTime() < 600 * 1000 ) return;
+        if (now.getTime() - last.getTime() < 600 * 1000) return;
         last = now;
 
         mail = new Mail(username, password, hostname, hostname_send);
@@ -70,10 +72,10 @@ public class AutoMail {
                     content = msg.getContent().toString();
                 }
                 Inbox in_msg = new Inbox(
-                    msg.getSubject(),
-                    content,
-                    new Date(),
-                    msg.getFrom()[0].toString()
+                        msg.getSubject(),
+                        content,
+                        new Date(),
+                        msg.getFrom()[0].toString()
                 );
                 if (sb != null)
                     in_msg.setAttachment(sb.toString());
@@ -83,10 +85,14 @@ public class AutoMail {
                 s.save(in_msg);
                 t.commit();
                 msg.getFlags().add(Flags.Flag.SEEN);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void post(String subject, String content, String... to) throws MessagingException {
+        mail.PostMail(subject, content, to);
     }
 
     private String multipart(Message msg, StringBuilder sb) throws IOException, MessagingException {
@@ -107,7 +113,7 @@ public class AutoMail {
                 sb.append(MimeUtility.decodeText(part.getFileName())).append('|');
                 UUID uuid = UUID.randomUUID(); // 创建uuid
                 File f;
-                while ((f = new File(attachment_path+uuid)).exists()) {
+                while ((f = new File(attachment_path + uuid)).exists()) {
                     uuid = UUID.randomUUID();
                 }
                 sb.append(uuid).append('|');
@@ -128,10 +134,10 @@ public class AutoMail {
     private void save() {
         File file = new File(path);
         try {
-            if(!file.exists())
+            if (!file.exists())
                 file.createNewFile();
-            FileOutputStream out = new FileOutputStream(file,false);
-            OutputStreamWriter writer =new OutputStreamWriter(out);
+            FileOutputStream out = new FileOutputStream(file, false);
+            OutputStreamWriter writer = new OutputStreamWriter(out);
             writer.write(username);
             writer.write("\n");
             writer.write(password);

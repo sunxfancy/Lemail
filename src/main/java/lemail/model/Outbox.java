@@ -40,12 +40,13 @@ public class Outbox implements Serializable {
     @JoinColumn(name = "checker")
     private User checker;
 
-    public Outbox(String subject, String content, Date date, String to) {
+    public Outbox(String subject, String content, Date date, String to, int sender_id) {
         this.subject = subject;
         this.content = content;
         this.date = date;
         this.state = 0;
         this.to = to;
+        this.sender_id = sender_id;
     }
 
     public Outbox() {
@@ -170,7 +171,7 @@ public class Outbox implements Serializable {
     }
 
     private String formatChecker() {
-        if(checker!=null)
+        if (checker != null)
             return checker.toSimpleJson();
         else
             return "null";
