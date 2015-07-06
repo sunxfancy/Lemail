@@ -25,21 +25,28 @@
             <div class="row">
                 <div class="receiver-address-div col-sm-4">
                     处理人员
+                    <label ng-repeat="user in users" class="label label-primary" ng-if="user.id == selectedHandler.id">{{user.name}}</label>
                     <select ng-model="selectedHandler.id" style="width: 100px">
                         <option ng-repeat="user in users" value="{{user.id}}">{{user.name}}</option>
                     </select>
-                    <label ng-repeat="user in users" ng-if="user.id == selectedHandler.id">{{user.name}}</label>
                 </div>
                 <div class="receiver-address-div col-sm-6">设定时限</div>
-                <div class="receiver-address-div col-sm-2"><button>确定</button></div>
+                <div class="receiver-address-div col-sm-2">
+                    <button class="btn btn-primary" ng-click="onDistribute()">分发</button>
+                </div>
             </div>
             <div class="row has-division">
                 <div class="receiver-address-div col-sm-12">
                     查阅人员
-                    <select ng-model="selectedUser.id" style="width: 100px">
-                        <option ng-repeat="user in users" value="{{user.id}}">{{user.name}}</option>
+                    <label style="margin-right: 5px" ng-click="deleteUser($index)" class="label label-success" ng-repeat="user in selectedUsers track by $index">{{user.name}}</label>
+
+                    <select ng-if="!showClick" ng-model="selectedUser"
+                               ng-options="user as user.name for user in users"
+                                ng-change="selectUser(selectedUser)"
+                               style="width: 100px" >
+                        <option></option>
                     </select>
-                    <label ng-repeat="user in users" ng-if="user.id == selectedUser.id">{{user.name}}</label>
+                    <span ng-if="showClick" ng-click="addClick()" class="glyphicon glyphicon-plus-sign"></span>
                 </div>
                 <div class="division-line col-sm-12"></div>
             </div>

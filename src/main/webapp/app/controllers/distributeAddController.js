@@ -20,11 +20,19 @@ LeMailModule.controller('distributeListController',  ['$scope','$http',function(
     };
 
     $scope.selectedHandler = null;
+    $scope.selectedUsers = [];
 
     $scope.handler = null;
     $scope.users = [
         {id: 1, name:"侠客"},
-        {id: 2, name:"熊"}
+        {id: 2, name:"熊"},
+        {id: 3, name:"孙猴子"},
+        {id: 4, name:"李很乐"},
+        {id: 5, name:"马涛涛"},
+        {id: 6, name:"大爽"},
+        {id: 7, name:"monkey"},
+        {id: 8, name:"孙芙媛"},
+        {id: 8, name:"童××"}
     ];
 
     $scope.selectHandler = function(user){
@@ -32,6 +40,26 @@ LeMailModule.controller('distributeListController',  ['$scope','$http',function(
         $scope.selectedHandler = user;
     };
 
+    $scope.selectUser = function(user) {
+        console.log(user);
+        $scope.selectedUsers.push(user);
+        $scope.showClick = true;
+    };
+
+    $scope.deleteUser = function(index) {
+        $scope.selectedUsers.splice(index, 1);
+        $scope.showClick = true;
+    };
+
+    $scope.onDistribute = function(){
+
+    };
+
+    $scope.addClick = function () {
+        $scope.showClick = false;
+    };
+
+    $scope.showClick = true;
 
     $scope.onPageLoad = function(){
 
