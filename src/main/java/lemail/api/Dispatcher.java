@@ -45,6 +45,8 @@ public class Dispatcher {
         try {
             check();
             Inbox inbox = (Inbox) DBSession.find_first(Inbox.class, Restrictions.eq("id", id));
+            if (inbox == null)
+                return Action.error(404, "对应邮件不存在");
             if (inbox.getState() == 0 || inbox.getState() == 5)
                 inbox.setState(1);
             s.beginTransaction();
